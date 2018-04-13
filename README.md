@@ -1,2 +1,9 @@
-# otus_java_2018_04
-Otus homework
+
+# Домашняя работа для курса "Разработчик Java" в Otus.ru
+
+Группа 2018-04
+
+### Студент
+Alexey Bodyak (Алексей Бодяк)
+
+desepticon555@gmail.com
