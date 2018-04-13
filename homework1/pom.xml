@@ -55,6 +55,24 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>com.github.dingxin</groupId>
+                <artifactId>proguard-maven-plugin</artifactId>
+                <version>1.0.3</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>proguard</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <libs>
+                        <lib>${java.home}/jmods/java.base.jmod(!**.jar;!module-info.class)</lib>
+                    </libs>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 </project>
