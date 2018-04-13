@@ -33,6 +33,11 @@
                 <artifactId>guava</artifactId>
                 <version>${google.guava.version}</version>
             </dependency>
+            <dependency>
+                <groupId>net.sf.proguard</groupId>
+                <artifactId>proguard-base</artifactId>
+                <version>${version.net.sf.proguard}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 </project>
