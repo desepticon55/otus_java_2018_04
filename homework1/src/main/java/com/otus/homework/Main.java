@@ -7,5 +7,9 @@ public class Main {
     String s = Joiner.on(",").join(1, 2, 3);
     System.out.println("Hello World");
     System.out.println(s);
+
+    Pair<Integer, String> pair = Pair.of(1, "Hello World" );
+    System.out.println(pair);
   }
+
 }
