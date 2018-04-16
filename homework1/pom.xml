@@ -11,6 +11,10 @@
 
     <artifactId>homework1</artifactId>
 
+    <properties>
+        <project.name>Homework1</project.name>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>com.google.guava</groupId>
@@ -19,7 +23,7 @@
     </dependencies>
 
     <build>
-        <finalName>homework1</finalName>
+        <finalName>${project.name}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
