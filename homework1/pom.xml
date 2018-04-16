@@ -11,6 +11,10 @@
 
     <artifactId>homework1</artifactId>
 
+    <properties>
+        <project.name>Homework1</project.name>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>com.google.guava</groupId>
@@ -19,7 +23,7 @@
     </dependencies>
 
     <build>
-        <finalName>homework1</finalName>
+        <finalName>${project.name}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -55,6 +59,22 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>3.0.0</version>
+                <configuration>
+                    <appendAssemblyId>true</appendAssemblyId>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                    <archive>
+                        <manifest>
+                            <mainClass>com.otus.homework.Main</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
             </plugin>
             <!--https://github.com/dingxin/proguard-maven-plugin-->
             <plugin>
