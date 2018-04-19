@@ -12,7 +12,7 @@
     <artifactId>homework1</artifactId>
 
     <properties>
-        <project.name>Homework1</project.name>
+        <project.name>homework1</project.name>
     </properties>
 
     <dependencies>
@@ -87,6 +87,12 @@
                     </execution>
                 </executions>
                 <configuration>
+                    <options>
+                        <option>-dontwarn</option>
+                        <option>-keep public class com.otus.homework.**</option>
+                    </options>
+                    <injar>homework1-jar-with-dependencies.jar</injar>
+                    <outjar>${project.build.finalName}-with-dep-obfuscation.jar</outjar>
                     <libs>
                         <lib>${java.home}/jmods/java.base.jmod(!**.jar;!module-info.class)</lib>
                     </libs>
