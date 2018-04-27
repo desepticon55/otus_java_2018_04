@@ -1,4 +1,4 @@
-package com.otus.homework;
+package com.otus.homework1;
 
 import com.google.common.base.Joiner;
 

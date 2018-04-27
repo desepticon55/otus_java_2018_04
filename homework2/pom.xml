@@ -9,10 +9,10 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>homework1</artifactId>
+    <artifactId>homework2</artifactId>
 
     <properties>
-        <project.name>homework1</project.name>
+        <project.name>homework2</project.name>
     </properties>
 
     <dependencies>
@@ -42,7 +42,7 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>dependency</classpathPrefix>
-                            <main-class>com.otus.homework1.Main</main-class>
+                            <main-class>com.otus.homework2.Application</main-class>
                         </manifest>
                     </archive>
                 </configuration>
@@ -66,12 +66,19 @@
                         <descriptorRef>jar-with-dependencies</descriptorRef>
                     </descriptorRefs>
                     <archive>
+                        <index>true</index>
                         <manifest>
-                            <mainClass>com.otus.homework1.Main</mainClass>
+                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                            <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+                            <main-class>com.otus.homework2.Application</main-class>
                         </manifest>
+                        <manifestEntries>
+                            <Premain-Class>com.otus.homework2.ObjectCalculator</Premain-Class>
+                        </manifestEntries>
                     </archive>
                 </configuration>
             </plugin>
         </plugins>
     </build>
+
 </project>
