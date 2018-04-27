@@ -74,9 +74,7 @@ public class StringTutor {
     if (arr[1].length() < 3 || arr[2].length() < 3) {
       return false;
     }
-    Pattern pattern = Pattern.compile("(Привет,[А-Я][a-я]*[,][А-Я][а-я\\s]*)");
-    Matcher matcher = pattern.matcher(greeting);
-    return matcher.find();
+    return greeting.matches("(Привет,[А-Я][a-я]*[,][А-Я][а-я\\s]*)");
   }
 
   @Test
