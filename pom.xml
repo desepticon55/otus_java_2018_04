@@ -25,6 +25,7 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <version.net.sf.proguard>6.0.1</version.net.sf.proguard>
+        <version.junit>4.12</version.junit>
     </properties>
 
     <dependencyManagement>
@@ -38,6 +39,12 @@
                 <groupId>net.sf.proguard</groupId>
                 <artifactId>proguard-base</artifactId>
                 <version>${version.net.sf.proguard}</version>
+            </dependency>
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>4.12</version>
+                <scope>${version.junit}</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>
