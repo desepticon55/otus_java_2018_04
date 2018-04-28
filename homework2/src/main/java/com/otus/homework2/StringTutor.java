@@ -52,29 +52,9 @@ public class StringTutor {
    * и начинаются с большой буквы
    */
   public boolean checkGreeting(String greeting) {
-    if (Objects.isNull(greeting)) {
-      throw new IllegalArgumentException("String should not be null");
-    }
-
-    if (greeting.isEmpty()) {
-      throw new IllegalArgumentException("String should not be empty");
-    }
-
-    if (!greeting.endsWith("!")) {
-      return false;
-    }
-    greeting = greeting.replaceAll(", ", ",");
-    greeting = greeting.replaceAll("!", "").trim();
-    greeting = greeting.replaceAll(" ", ",");
-    String[] arr = greeting.split(",");
-    if (arr.length < 3) {
-      return false;
-    }
-
-    if (arr[1].length() < 3 || arr[2].length() < 3) {
-      return false;
-    }
-    return greeting.matches("(Привет,[А-Я][a-я]*[,][А-Я][а-я\\s]*)");
+    Objects.requireNonNull(greeting, "String should be not null");
+    return greeting.trim()
+            .matches("^Привет,[ ]*[А-Я][а-я]{2,}[ ]*[А-Я][а-я]{2,}[ ]*!$");
   }
 
   @Test
