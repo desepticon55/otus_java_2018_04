@@ -5,8 +5,6 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 import java.util.Objects;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class StringTutor {
   public static void log(String s) {
