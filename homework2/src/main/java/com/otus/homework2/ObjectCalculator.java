@@ -2,6 +2,7 @@ package com.otus.homework2;
 
 import java.lang.instrument.Instrumentation;
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -37,7 +38,8 @@ public class ObjectCalculator {
     }
 
     return Stream.of(fields)
-            .peek(System.out::println)
+            .filter(f -> !Modifier.isStatic(f.getModifiers()))
+//            .peek(System.out::println)
             .map(f -> {
               try {
                 f.setAccessible(true);
