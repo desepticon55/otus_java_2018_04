@@ -11,6 +11,7 @@
     <modules>
         <module>homework1</module>
         <module>homework2</module>
+        <module>homework3</module>
     </modules>
 
     <developers>
@@ -26,6 +27,8 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <version.net.sf.proguard>6.0.1</version.net.sf.proguard>
         <version.junit>4.12</version.junit>
+        <version.lombok>1.16.20</version.lombok>
+        <version.commons-lang>3.7</version.commons-lang>
     </properties>
 
     <dependencyManagement>
@@ -44,6 +47,17 @@
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
                 <version>${version.junit}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${version.lombok}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${version.commons-lang}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
