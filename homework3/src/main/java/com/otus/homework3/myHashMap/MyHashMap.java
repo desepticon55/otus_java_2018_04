@@ -68,7 +68,7 @@ public class MyHashMap<K, V> implements Map<K, V> {
     }
 
     addEntry(hash, key, value, idx);
-    return null;
+    return value;
   }
 
   @Override
