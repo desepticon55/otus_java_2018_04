@@ -114,6 +114,8 @@ public class MyArrayList<T> implements List<T> {
     for (int i = 0; i < values.length; i++) {
       values[i] = null;
     }
+
+    size = 0;
   }
 
   @Override

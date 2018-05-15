@@ -76,5 +76,15 @@ public class MyArrayListTests {
     assertEquals(animalsCopy.get(0), "Кит");
   }
 
+  @Test
+  public void clearTest() {
+    List<String> animals = new MyArrayList<>();
+    animals.add("Кит");
+    animals.add("Обезьяна");
+
+    animals.clear();
+    assertTrue(animals.isEmpty());
+    assertEquals(0, animals.size());
+  }
 
 }
