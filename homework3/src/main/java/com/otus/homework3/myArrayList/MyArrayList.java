@@ -9,9 +9,9 @@ public class MyArrayList<T> implements List<T> {
 
   private final Integer DEFAULT_CAPACITY = 16;
 
-  protected T[] values;
+  private T[] values;
 
-  protected int size = 0;
+  private int size = 0;
 
   public MyArrayList(T[] values) {
     this.values = values;
@@ -186,5 +186,95 @@ public class MyArrayList<T> implements List<T> {
     System.arraycopy(values, 0, values, 0, index);
     System.arraycopy(values, index + 1, values, index, values.length - index - 1);
     size--;
+  }
+
+  private class MyIterator<T> implements Iterator<T> {
+    MyArrayList<T> list;
+    int counter = 0;
+    int lastElementIndex = -1;
+
+    public MyIterator() {}
+
+    public MyIterator(MyArrayList<T> list) {
+      this.list = list;
+    }
+
+    @Override
+    public boolean hasNext() {
+      return counter != list.size;
+    }
+
+    @Override
+    public T next() {
+      T value = list.values[counter];
+      lastElementIndex = counter;
+      counter++;
+      return value;
+    }
+
+    @Override
+    public void remove() {
+      list.remove(lastElementIndex);
+    }
+  }
+
+  private class MyListIterator<T> extends MyIterator<T> implements ListIterator<T> {
+
+
+    public MyListIterator(int index, MyArrayList<T> list) {
+      super(list);
+      counter = index;
+    }
+
+    @Override
+    public boolean hasNext() {
+      return super.hasNext();
+    }
+
+    @Override
+    public T next() {
+      return super.next();
+    }
+
+    @Override
+    public boolean hasPrevious() {
+      return counter != 0;
+    }
+
+    @Override
+    public T previous() {
+      int index = counter - 1;
+      if (index < 0) {
+        throw new NoSuchElementException();
+      }
+      counter = index;
+      lastElementIndex = index;
+      return list.values[counter];
+    }
+
+    @Override
+    public int nextIndex() {
+      return counter;
+    }
+
+    @Override
+    public int previousIndex() {
+      return counter - 1;
+    }
+
+    @Override
+    public void remove() {
+      list.remove(lastElementIndex);
+    }
+
+    @Override
+    public void set(T t) {
+      list.set(lastElementIndex, t);
+    }
+
+    @Override
+    public void add(T t) {
+      list.add(t);
+    }
   }
 }

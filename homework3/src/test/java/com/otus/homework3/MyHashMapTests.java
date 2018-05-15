@@ -22,7 +22,7 @@ public class MyHashMapTests {
     }
     peoples.put("m.korneev", "Корнеев Михаил Иванович");
     assertFalse(peoples.isEmpty());
-    assertEquals(peoples.size(), 153);
+    assertEquals(153, peoples.size());
   }
 
   @Test
@@ -32,7 +32,7 @@ public class MyHashMapTests {
     peoples.put("s.sidorov", "Сидоров Сергей Викторович");
     peoples.put("m.korneev", "Корнеев Михаил Иванович");
     assertFalse(peoples.isEmpty());
-    assertEquals(peoples.size(), 3);
-    assertEquals(peoples.get("s.sidorov"), "Сидоров Сергей Викторович");
+    assertEquals(3, peoples.size());
+    assertEquals("Сидоров Сергей Викторович", peoples.get("s.sidorov"));
   }
 }

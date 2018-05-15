@@ -7,10 +7,10 @@ import java.util.*;
 
 public class MyHashMap<K, V> implements Map<K, V> {
 
-  static final int DEFAULT_INITIAL_CAPACITY = 16;
+  private static final int DEFAULT_INITIAL_CAPACITY = 16;
 
-  transient Node<K, V>[] values;
-  int size = 0;
+  private transient Node<K, V>[] values;
+  private int size = 0;
 
   public MyHashMap() {
     values = new Node[DEFAULT_INITIAL_CAPACITY];

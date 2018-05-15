@@ -24,7 +24,7 @@ public class MyArrayListTests {
     animals.add(null);
     Collections.addAll(animals, "Человек", "Петух");
     assertFalse(animals.isEmpty());
-    assertEquals(animals.size(), 7);
+    assertEquals(7, animals.size());
   }
 
   @Test
@@ -33,7 +33,7 @@ public class MyArrayListTests {
     animals.add("Кит");
     animals.add("Тигр");
     assertFalse(animals.isEmpty());
-    assertEquals(animals.get(1), "Тигр");
+    assertEquals("Тигр", animals.get(1));
   }
 
   @Test
@@ -45,8 +45,8 @@ public class MyArrayListTests {
     animals.remove("Кит");
     animals.remove(2);
     assertFalse(animals.isEmpty());
-    assertEquals(animals.size(), 1);
-    assertEquals(animals.get(0), "Тигр");
+    assertEquals(1, animals.size());
+    assertEquals("Тигр", animals.get(0));
   }
 
   @Test
@@ -57,9 +57,9 @@ public class MyArrayListTests {
     animals.add("Акула");
     assertFalse(animals.isEmpty());
     Collections.sort(animals);
-    assertEquals(animals.get(0), "Акула");
-    assertEquals(animals.get(1), "Кит");
-    assertEquals(animals.get(2), "Тигр");
+    assertEquals("Акула", animals.get(0));
+    assertEquals("Кит", animals.get(1));
+    assertEquals("Тигр", animals.get(2));
   }
 
   @Test
@@ -73,7 +73,7 @@ public class MyArrayListTests {
     assertFalse(animalsCopy.isEmpty());
     Collections.copy(animalsCopy, animals);
     assertFalse(animalsCopy.isEmpty());
-    assertEquals(animalsCopy.get(0), "Кит");
+    assertEquals("Кит", animalsCopy.get(0));
   }
 
   @Test
