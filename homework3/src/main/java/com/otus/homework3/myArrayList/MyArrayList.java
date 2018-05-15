@@ -5,7 +5,7 @@ import org.apache.commons.lang3.NotImplementedException;
 import javax.annotation.Nonnull;
 import java.util.*;
 
-public class MyArrayList<T> implements Iterable<T>, List<T> {
+public class MyArrayList<T> implements List<T> {
 
   private final Integer DEFAULT_CAPACITY = 16;
 
