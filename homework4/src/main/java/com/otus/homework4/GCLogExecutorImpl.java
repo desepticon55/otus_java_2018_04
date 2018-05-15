@@ -9,7 +9,8 @@ public class GCLogExecutorImpl implements GCLogExecutor {
   private ScheduledExecutorService executorService;
 
   GCLogExecutorImpl() {
-    executorService = Executors.newSingleThreadScheduledExecutor();
+    executorService = Executors.newScheduledThreadPool(2);
+    executorService.scheduleAtFixedRate(this::printGCStats, 2, 2, TimeUnit.SECONDS);
   }
 
   @Override
@@ -20,6 +21,5 @@ public class GCLogExecutorImpl implements GCLogExecutor {
         objects[i] = 1;
       }
     }, 100, 100, TimeUnit.MILLISECONDS);
-    executorService.scheduleAtFixedRate(this::printGCStats, 2, 2, TimeUnit.SECONDS);
   }
 }

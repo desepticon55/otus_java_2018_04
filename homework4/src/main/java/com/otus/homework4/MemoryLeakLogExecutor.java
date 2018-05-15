@@ -13,6 +13,7 @@ public class MemoryLeakLogExecutor implements GCLogExecutor {
 
   MemoryLeakLogExecutor() {
     executorService = Executors.newSingleThreadScheduledExecutor();
+    executorService.scheduleAtFixedRate(this::printGCStats, 10, 10, TimeUnit.SECONDS);
   }
 
   @Override
@@ -22,7 +23,6 @@ public class MemoryLeakLogExecutor implements GCLogExecutor {
             .ints(5000000, 1, 3000)
             .boxed()
             .collect(Collectors.toList());
-    executorService.scheduleAtFixedRate(this::printGCStats, 1, 1, TimeUnit.SECONDS);
     while(true) {
       integerList.addAll(integers);
       integerList.removeIf(el -> el % 10 == 0);
