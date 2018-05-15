@@ -9,8 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>homework3</artifactId>
-
+    <artifactId>homework4</artifactId>
 
     <dependencies>
         <dependency>
@@ -51,7 +50,7 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>dependency</classpathPrefix>
-                            <main-class>com.otus.homework3.Application</main-class>
+                            <main-class>com.otus.homework4.Application</main-class>
                         </manifest>
                     </archive>
                 </configuration>
@@ -79,13 +78,12 @@
                         <manifest>
                             <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
                             <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
-                            <main-class>com.otus.homework3.Application</main-class>
+                            <main-class>com.otus.homework4.Application</main-class>
                         </manifest>
                     </archive>
                 </configuration>
             </plugin>
         </plugins>
     </build>
-
 
 </project>
