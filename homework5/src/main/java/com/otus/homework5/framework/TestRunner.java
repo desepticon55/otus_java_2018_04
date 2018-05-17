@@ -51,9 +51,9 @@ public class TestRunner {
   private static void runMethod(Object o, Method method) {
     if (method.isAnnotationPresent(Test.class)) {
       long startTime = System.currentTimeMillis();
-      log.info("START TEST {}", method.getName());
+      log.info("START TEST {}#{}", o.getClass().getCanonicalName(), method.getName());
       method.invoke(o);
-      log.info("TIME TEST {}: {} ms.", method.getName(), System.currentTimeMillis() - startTime);
+      log.info("TIME TEST {}#{}: {} ms.", o.getClass().getCanonicalName(), method.getName(), System.currentTimeMillis() - startTime);
     } else {
       method.invoke(o);
     }

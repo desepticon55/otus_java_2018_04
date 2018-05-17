@@ -17,7 +17,7 @@ public class ArrayListTests {
 
   @Before
   public void beforeMethod() {
-    System.out.println(1);
+    System.out.println("BEFORE METHOD");
   }
 
   @Test
@@ -69,6 +69,6 @@ public class ArrayListTests {
 
   @After
   public void afterMethod() {
-    System.out.println(3);
+    System.out.println("AFTER METHOD");
   }
 }
