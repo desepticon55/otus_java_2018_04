@@ -11,6 +11,10 @@
 
     <artifactId>homework4</artifactId>
 
+    <properties>
+        <project.name>homework4</project.name>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>com.google.guava</groupId>

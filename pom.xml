@@ -13,6 +13,7 @@
         <module>homework2</module>
         <module>homework3</module>
         <module>homework4</module>
+        <module>homework5</module>
     </modules>
 
     <developers>
@@ -30,6 +31,7 @@
         <version.junit>4.12</version.junit>
         <version.lombok>1.16.20</version.lombok>
         <version.commons-lang>3.7</version.commons-lang>
+        <version.log4j>2.3</version.log4j>
     </properties>
 
     <dependencyManagement>
@@ -59,6 +61,21 @@
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-lang3</artifactId>
                 <version>${version.commons-lang}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-slf4j-impl</artifactId>
+                <version>${version.log4j}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-core</artifactId>
+                <version>${version.log4j}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-api</artifactId>
+                <version>${version.log4j}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
