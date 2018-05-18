@@ -15,9 +15,17 @@ import static com.otus.homework5.framework.Assert.assertTrue;
 
 public class ArrayListTests {
 
+  private String str;
+
   @Before
   public void beforeMethod() {
-    System.out.println("BEFORE METHOD");
+    str = "BEFORE METHOD";
+    System.out.println(str);
+  }
+
+  @Test
+  public void testBeforeMethod() {
+    assertEquals("BEFORE METHOD", str);
   }
 
   @Test

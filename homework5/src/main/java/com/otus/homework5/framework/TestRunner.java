@@ -17,9 +17,10 @@ public class TestRunner {
 
   public static void run(Class<?> c) {
     Objects.requireNonNull(c, "Class should not be null");
-    runClassMethods(c, Before.class);
-    runClassMethods(c, Test.class);
-    runClassMethods(c, After.class);
+    Object o = createObject(c);
+    runClassMethods(o, Before.class);
+    runClassMethods(o, Test.class);
+    runClassMethods(o, After.class);
   }
 
   public static void run(String packageName) {
@@ -30,18 +31,23 @@ public class TestRunner {
     List<Class<?>> classes = getClassesWithPackage(packageName);
     classes.stream()
             .filter(cl -> !cl.isInterface() || !cl.isAnnotation())
-            .forEach(cl -> {
-              runClassMethods(cl, Before.class);
-              runClassMethods(cl, Test.class);
-              runClassMethods(cl, After.class);
+            .map(TestRunner::createObject)
+            .forEach(o -> {
+              runClassMethods(o, Before.class);
+              runClassMethods(o, Test.class);
+              runClassMethods(o, After.class);
             });
   }
 
   @SneakyThrows
-  private static void runClassMethods(Class<?> c, Class<? extends Annotation> annotationClass) {
+  private static Object createObject(Class<?> c) {
     Object o = c.newInstance();
     Objects.requireNonNull(o);
-    Method[] methods = c.getDeclaredMethods();
+    return o;
+  }
+
+  private static void runClassMethods(Object o, Class<? extends Annotation> annotationClass) {
+    Method[] methods = o.getClass().getDeclaredMethods();
     Stream.of(methods).parallel()
             .filter(method -> method.isAnnotationPresent(annotationClass))
             .forEach(method -> runMethod(o, method));
