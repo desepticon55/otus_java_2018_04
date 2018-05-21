@@ -14,6 +14,7 @@
         <module>homework3</module>
         <module>homework4</module>
         <module>homework5</module>
+        <module>homework6</module>
     </modules>
 
     <developers>
@@ -32,6 +33,8 @@
         <version.lombok>1.16.20</version.lombok>
         <version.commons-lang>3.7</version.commons-lang>
         <version.log4j>2.3</version.log4j>
+        <version.powermock>1.7.4</version.powermock>
+        <version.mockito-all>1.10.19</version.mockito-all>
     </properties>
 
     <dependencyManagement>
@@ -76,6 +79,18 @@
                 <groupId>org.apache.logging.log4j</groupId>
                 <artifactId>log4j-api</artifactId>
                 <version>${version.log4j}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.powermock</groupId>
+                <artifactId>powermock-module-junit4</artifactId>
+                <version>${version.powermock}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.mockito</groupId>
+                <artifactId>mockito-all</artifactId>
+                <version>${version.mockito-all}</version>
+                <scope>test</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>
