@@ -4,6 +4,7 @@ import lombok.SneakyThrows;
 import org.junit.Before;
 import org.junit.Test;
 import org.powermock.api.support.membermodification.MemberModifier;
+import org.testng.collections.Lists;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -18,6 +19,7 @@ public class ATMTests {
   @Before
   public void init() {
     List<Banknote> banknotes = new ArrayList<>();
+    banknotes.add(Banknote.builder().banknoteNominal(100).banknoteType(RUBLE).build());
     banknotes.add(Banknote.builder().banknoteNominal(100).banknoteType(RUBLE).build());
     banknotes.add(Banknote.builder().banknoteNominal(100).banknoteType(RUBLE).build());
     banknotes.add(Banknote.builder().banknoteNominal(100).banknoteType(RUBLE).build());
@@ -42,11 +44,11 @@ public class ATMTests {
   public void getCashBalanceFromRubleATMTest() {
     AutomatedTellerMachine atm = new RubleAutomatedTellerMachine();
     MemberModifier
-            .field(RubleAutomatedTellerMachine.class, "banknotes")
+            .field(RubleAutomatedTellerMachine.class, "banknoteMap")
             .set(atm, banknotesMap);
     Integer balance = atm.getCashBalance();
     assertTrue(Objects.nonNull(balance));
-    assertEquals(11500L, balance.longValue());
+    assertEquals(11600L, balance.longValue());
   }
 
   @Test
@@ -64,11 +66,30 @@ public class ATMTests {
   public void withdrawCashFromRubbleATMTest() {
     AutomatedTellerMachine atm = new RubleAutomatedTellerMachine();
     MemberModifier
-            .field(RubleAutomatedTellerMachine.class, "banknotes")
+            .field(RubleAutomatedTellerMachine.class, "banknoteMap")
             .set(atm, banknotesMap);
-    List<Banknote> cash = atm.withdrawCash(500);
+    List<Banknote> cash = atm.withdrawCash(2300);
     assertNotNull(cash);
     assertFalse(cash.isEmpty());
+    assertEquals(Lists.newArrayList(2000, 100, 100, 100), mapListBanknoteToNominalList(cash));
+    cash = atm.withdrawCash(1700);
+    assertNotNull(cash);
+    assertFalse(cash.isEmpty());
+    assertEquals(Lists.newArrayList(1000, 500, 100, 100), mapListBanknoteToNominalList(cash));
+    cash = atm.withdrawCash(1000);
+    assertNotNull(cash);
+    assertFalse(cash.isEmpty());
+    assertEquals(Collections.singletonList(1000), mapListBanknoteToNominalList(cash));
+    cash = atm.withdrawCash(6600);
+    assertNotNull(cash);
+    assertFalse(cash.isEmpty());
+    assertEquals(Lists.newArrayList(5000, 1000, 500, 100), mapListBanknoteToNominalList(cash));
+  }
+
+  private List<Integer> mapListBanknoteToNominalList(List<Banknote> cash) {
+    return cash.stream()
+            .map(Banknote::getBanknoteNominal)
+            .collect(Collectors.toList());
   }
 
   private List<Banknote> filterBanknotesByNominal(List<Banknote> banknotes, Integer nominal) {
