@@ -9,6 +9,7 @@ import org.testng.collections.Lists;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static com.otus.homework6.BanknoteType.DOLLAR;
 import static com.otus.homework6.BanknoteType.RUBLE;
 import static org.junit.Assert.*;
 
@@ -61,6 +62,24 @@ public class ATMTests {
     assertEquals(5000L, atm.getCashBalance().longValue());
   }
 
+  @Test(expected = IllegalArgumentException.class)
+  public void addDollarBanknoteTest() {
+    AutomatedTellerMachine atm = new RubleAutomatedTellerMachine();
+    atm.addBanknote(Banknote.builder()
+            .banknoteType(DOLLAR)
+            .banknoteNominal(5000)
+            .build());
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void addUnknownBanknoteTest() {
+    AutomatedTellerMachine atm = new RubleAutomatedTellerMachine();
+    atm.addBanknote(Banknote.builder()
+            .banknoteType(RUBLE)
+            .banknoteNominal(50)
+            .build());
+  }
+
   @Test
   @SneakyThrows
   public void withdrawCashFromRubbleATMTest() {
@@ -84,6 +103,33 @@ public class ATMTests {
     assertNotNull(cash);
     assertFalse(cash.isEmpty());
     assertEquals(Lists.newArrayList(5000, 1000, 500, 100), mapListBanknoteToNominalList(cash));
+  }
+
+  @Test(expected = EmptyATMException.class)
+  @SneakyThrows
+  public void withdrawCashErrorTest() {
+    AutomatedTellerMachine atm = new RubleAutomatedTellerMachine();
+    atm.addBanknote(Banknote.builder()
+            .banknoteType(RUBLE)
+            .banknoteNominal(2000)
+            .build());
+    atm.addBanknote(Banknote.builder()
+            .banknoteType(RUBLE)
+            .banknoteNominal(500)
+            .build());
+    atm.addBanknote(Banknote.builder()
+            .banknoteType(RUBLE)
+            .banknoteNominal(100)
+            .build());
+    atm.addBanknote(Banknote.builder()
+            .banknoteType(RUBLE)
+            .banknoteNominal(100)
+            .build());
+    atm.addBanknote(Banknote.builder()
+            .banknoteType(RUBLE)
+            .banknoteNominal(100)
+            .build());
+    List<Banknote> cash = atm.withdrawCash(2900);
   }
 
   private List<Integer> mapListBanknoteToNominalList(List<Banknote> cash) {

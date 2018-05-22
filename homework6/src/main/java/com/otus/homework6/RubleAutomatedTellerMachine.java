@@ -1,5 +1,6 @@
 package com.otus.homework6;
 
+import com.google.common.collect.Lists;
 import lombok.Getter;
 
 import java.util.*;
@@ -57,7 +58,7 @@ public class RubleAutomatedTellerMachine implements AutomatedTellerMachine {
 
     List<Banknote> banknotesByNominal = banknoteMap.get(banknote.getBanknoteNominal());
     if (Objects.isNull(banknotesByNominal)) {
-      banknotesByNominal = Collections.singletonList(banknote);
+      banknotesByNominal = Lists.newArrayList(banknote);
     } else {
       banknotesByNominal.add(banknote);
     }
