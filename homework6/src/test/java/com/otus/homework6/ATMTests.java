@@ -43,10 +43,10 @@ public class ATMTests {
   @Test
   @SneakyThrows
   public void getCashBalanceFromRubleATMTest() {
-    AutomatedTellerMachine atm = new RubleAutomatedTellerMachine();
-    MemberModifier
-            .field(RubleAutomatedTellerMachine.class, "banknoteMap")
-            .set(atm, banknotesMap);
+    AutomatedTellerMachine atm = new RubleAutomatedTellerMachine(banknotesMap);
+//    MemberModifier
+//            .field(RubleAutomatedTellerMachine.class, "banknoteMap")
+//            .set(atm, banknotesMap);
     Integer balance = atm.getCashBalance();
     assertTrue(Objects.nonNull(balance));
     assertEquals(11600L, balance.longValue());
@@ -83,10 +83,10 @@ public class ATMTests {
   @Test
   @SneakyThrows
   public void withdrawCashFromRubbleATMTest() {
-    AutomatedTellerMachine atm = new RubleAutomatedTellerMachine();
-    MemberModifier
-            .field(RubleAutomatedTellerMachine.class, "banknoteMap")
-            .set(atm, banknotesMap);
+    AutomatedTellerMachine atm = new RubleAutomatedTellerMachine(banknotesMap);
+//    MemberModifier
+//            .field(RubleAutomatedTellerMachine.class, "banknoteMap")
+//            .set(atm, banknotesMap);
     List<Banknote> cash = atm.withdrawCash(2300);
     assertNotNull(cash);
     assertFalse(cash.isEmpty());

@@ -12,21 +12,30 @@ public class RubleAutomatedTellerMachine implements AutomatedTellerMachine {
 
   private static final String BANKNOTE_NOMINAL_PROPERTY = "banknote.nominal.ruble";
 
+  private NominalListPropertiesReader propertiesReader;
   @Getter
   private Map<Integer, List<Banknote>> banknoteMap;
-
   private List<Integer> nominalList;
 
   public RubleAutomatedTellerMachine() {
     banknoteMap = new HashMap<>();
-    nominalList = getNominalListFromProperties(BANKNOTE_NOMINAL_PROPERTY);
+    propertiesReader = new NominalListPropertiesReader();
+    nominalList = propertiesReader.getNominalListFromProperties(BANKNOTE_NOMINAL_PROPERTY);
+  }
+
+
+  public RubleAutomatedTellerMachine(Map<Integer, List<Banknote>> banknoteMap) {
+    this.banknoteMap = banknoteMap;
+    propertiesReader = new NominalListPropertiesReader();
+    nominalList = propertiesReader.getNominalListFromProperties(BANKNOTE_NOMINAL_PROPERTY);
   }
 
   @Override
   public List<Banknote> withdrawCash(Integer sumCash) {
     Objects.requireNonNull(sumCash, "Sum should be not null");
-    if (sumCash > getCashBalance()) {
-      throw new EmptyATMException("ATM does not have enough money");
+    int balance = getCashBalance();
+    if (sumCash > balance) {
+      throw new EmptyATMException(balance);
     }
 
     if (sumCash % 100 > 0) {
@@ -39,7 +48,7 @@ public class RubleAutomatedTellerMachine implements AutomatedTellerMachine {
   }
 
   @Override
-  public Integer getCashBalance() {
+  public int getCashBalance() {
     return banknoteMap.entrySet().stream()
             .mapToInt(el -> el.getValue().stream().mapToInt(Banknote::getBanknoteNominal).sum())
             .sum();
@@ -72,8 +81,10 @@ public class RubleAutomatedTellerMachine implements AutomatedTellerMachine {
       Map<Integer, List<Banknote>> bMap = getFilteredBanknoteMap();
       Integer minBanknote = getMinBanknoteNominal(bMap, sum);
 
-      if (Objects.isNull(minBanknote) || sum > getSumBanknoteLessOrEqualNominal(bMap, minBanknote)) {
-        throw new EmptyATMException("ATM does not have enough money");
+      int sumBanknotesLessOrEqualNominal = getSumBanknoteLessOrEqualNominal(bMap, minBanknote);
+
+      if (Objects.isNull(minBanknote) || sum > sumBanknotesLessOrEqualNominal) {
+        throw new EmptyATMException("Not enough banknotes of the desired denomination");
       }
 
       List<Banknote> b = bMap.get(minBanknote);
