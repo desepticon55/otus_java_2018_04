@@ -59,7 +59,7 @@ public class ATMTests {
             .banknoteType(RUBLE)
             .banknoteNominal(5000)
             .build());
-    assertEquals(5000L, atm.getCashBalance().longValue());
+    assertEquals(5000L, atm.getCashBalance());
   }
 
   @Test(expected = IllegalArgumentException.class)
