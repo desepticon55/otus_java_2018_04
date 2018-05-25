@@ -35,7 +35,7 @@ public class RubleAutomatedTellerMachine implements AutomatedTellerMachine {
     Objects.requireNonNull(sumCash, "Sum should be not null");
     int balance = getCashBalance();
     if (sumCash > balance) {
-      throw new EmptyATMException(balance);
+      throw new EmptyATMException(sumCash);
     }
 
     if (sumCash % 100 > 0) {
