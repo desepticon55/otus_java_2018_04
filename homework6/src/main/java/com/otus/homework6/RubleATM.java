@@ -2,32 +2,36 @@ package com.otus.homework6;
 
 import com.google.common.collect.Lists;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.otus.homework6.BanknoteType.RUBLE;
 
-public class RubleAutomatedTellerMachine implements AutomatedTellerMachine {
+public class RubleATM implements ATM {
 
   private static final String BANKNOTE_NOMINAL_PROPERTY = "banknote.nominal.ruble";
 
   private NominalListPropertiesReader propertiesReader;
   @Getter
   private Map<Integer, List<Banknote>> banknoteMap;
+  private Map<Integer, List<Banknote>> initBanknoteMap;
   private List<Integer> nominalList;
 
-  public RubleAutomatedTellerMachine() {
-    banknoteMap = new HashMap<>();
-    propertiesReader = new NominalListPropertiesReader();
-    nominalList = propertiesReader.getNominalListFromProperties(BANKNOTE_NOMINAL_PROPERTY);
+  public RubleATM() {
+    this.banknoteMap = new HashMap<>();
+    this.initBanknoteMap = new HashMap<>();
+    this.propertiesReader = new NominalListPropertiesReader();
+    this.nominalList = propertiesReader.getNominalListFromProperties(BANKNOTE_NOMINAL_PROPERTY);
   }
 
 
-  public RubleAutomatedTellerMachine(Map<Integer, List<Banknote>> banknoteMap) {
+  public RubleATM(Map<Integer, List<Banknote>> banknoteMap) {
     this.banknoteMap = banknoteMap;
-    propertiesReader = new NominalListPropertiesReader();
-    nominalList = propertiesReader.getNominalListFromProperties(BANKNOTE_NOMINAL_PROPERTY);
+    this.initBanknoteMap = copy(banknoteMap);
+    this.propertiesReader = new NominalListPropertiesReader();
+    this.nominalList = propertiesReader.getNominalListFromProperties(BANKNOTE_NOMINAL_PROPERTY);
   }
 
   @Override
@@ -74,6 +78,19 @@ public class RubleAutomatedTellerMachine implements AutomatedTellerMachine {
     banknoteMap.put(banknote.getBanknoteNominal(), banknotesByNominal);
   }
 
+  @Override
+  public void initializeATM(Map<Integer, List<Banknote>> map) {
+    if (Objects.isNull(map) || map.isEmpty()) {
+      banknoteMap = initBanknoteMap;
+    } else {
+      banknoteMap = map;
+    }
+  }
+
+  @Override
+  public void initializeATM() {
+    initializeATM(null);
+  }
 
   private void calculateBanknoteCount(List<Banknote> banknoteList, Integer sumCash) {
     Integer sum = sumCash;
@@ -119,5 +136,11 @@ public class RubleAutomatedTellerMachine implements AutomatedTellerMachine {
     return banknoteMap.entrySet().stream()
             .filter(el -> !el.getValue().isEmpty())
             .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+  }
+
+  private HashMap<Integer, List<Banknote>> copy(Map<Integer, List<Banknote>> original) {
+    HashMap<Integer, List<Banknote>> copy = new HashMap<>();
+    original.forEach((key, value) -> copy.put(key, new ArrayList<>(value)));
+    return copy;
   }
 }
