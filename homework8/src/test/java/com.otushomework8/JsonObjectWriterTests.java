@@ -2,20 +2,32 @@ package com.otushomework8;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.otus.homework8.JsonObject;
+import com.otus.homework8.JsonObjectWriter;
 import com.otushomework8.entity.Employee;
+import com.otushomework8.entity.TestObject;
+import org.junit.Assert;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class JsonObjectWriterTests {
 
   @Test
   public void writeObjectToJsonTest() {
-    Gson gson = new GsonBuilder().setPrettyPrinting().create();
-    Employee employee = Employee.builder()
-            .firstName("Alexey")
-            .lastName("Bodyak")
-            .age(23)
-            .build();
-    String json = gson.toJson(employee);
-    System.out.println(json);
+    Gson gson = new GsonBuilder()
+            .serializeNulls()
+            .setPrettyPrinting()
+            .create();
+    TestObject testObject = new TestObject();
+    JsonObjectWriter objectWriter = new JsonObjectWriter();
+    Object o = objectWriter.createObject(testObject);
+    assertNotNull(o);
+    String jsonString = ((JsonObject) o).toJSONString();
+    assertNotNull(jsonString);
+    System.out.println(jsonString);
+    TestObject fromJson = gson.fromJson(jsonString, TestObject.class);
+    assertEquals(testObject, fromJson);
   }
 }
