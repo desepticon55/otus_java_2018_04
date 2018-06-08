@@ -22,9 +22,7 @@ public class JsonObjectWriterTests {
             .create();
     TestObject testObject = new TestObject();
     JsonObjectWriter objectWriter = new JsonObjectWriter();
-    Object o = objectWriter.createObject(testObject);
-    assertNotNull(o);
-    String jsonString = ((JsonObject) o).toJSONString();
+    String jsonString = objectWriter.toJson(testObject);
     assertNotNull(jsonString);
     System.out.println(jsonString);
     TestObject fromJson = gson.fromJson(jsonString, TestObject.class);

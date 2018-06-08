@@ -11,7 +11,12 @@ import static com.otus.homework8.Checker.*;
 
 public class JsonObjectWriter {
 
-  public Object createObject(Object object) {
+  public String toJson(Object object) {
+    Object o = createObject(object);
+    return ((JsonObject) o).toJSONString();
+  }
+
+  private Object createObject(Object object) {
     if (isPrimitive(object)) {
       return object;
     }
