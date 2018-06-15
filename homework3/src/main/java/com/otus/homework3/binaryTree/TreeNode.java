@@ -1,8 +1,10 @@
 package com.otus.homework3.binaryTree;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 public class TreeNode<T> {
   private T value;
   TreeNode<T> left;
