@@ -3,7 +3,6 @@ package com.otus.homework6;
 import lombok.SneakyThrows;
 import org.junit.Before;
 import org.junit.Test;
-import org.powermock.api.support.membermodification.MemberModifier;
 import org.testng.collections.Lists;
 
 import java.util.*;
@@ -13,12 +12,14 @@ import static com.otus.homework6.BanknoteType.DOLLAR;
 import static com.otus.homework6.BanknoteType.RUBLE;
 import static org.junit.Assert.*;
 
-public class ATMTests {
+public class RubbleATMTests {
 
   private Map<Integer, List<Banknote>> banknotesMap = new HashMap<>();
+  private ATMFactory atmFactory;
 
   @Before
   public void init() {
+    atmFactory = new RubbleATMFactory();
     List<Banknote> banknotes = new ArrayList<>();
     banknotes.add(Banknote.builder().banknoteNominal(100).banknoteType(RUBLE).build());
     banknotes.add(Banknote.builder().banknoteNominal(100).banknoteType(RUBLE).build());
@@ -43,14 +44,14 @@ public class ATMTests {
   @Test
   @SneakyThrows
   public void getCashBalanceFromRubleATMTest() {
-    AutomatedTellerMachine atm = new RubleAutomatedTellerMachine(banknotesMap);
+    ATM atm = atmFactory.createATM(banknotesMap);
     Integer balance = atm.getCashBalance();
     assertEquals(11600L, balance.longValue());
   }
 
   @Test
   public void addBanknoteToRubbleATMTest() {
-    AutomatedTellerMachine atm = new RubleAutomatedTellerMachine();
+    ATM atm = atmFactory.createATM();
     atm.addBanknote(Banknote.builder()
             .banknoteType(RUBLE)
             .banknoteNominal(5000)
@@ -60,7 +61,7 @@ public class ATMTests {
 
   @Test(expected = IllegalArgumentException.class)
   public void addDollarBanknoteTest() {
-    AutomatedTellerMachine atm = new RubleAutomatedTellerMachine();
+    ATM atm = atmFactory.createATM();
     atm.addBanknote(Banknote.builder()
             .banknoteType(DOLLAR)
             .banknoteNominal(5000)
@@ -69,7 +70,7 @@ public class ATMTests {
 
   @Test(expected = IllegalArgumentException.class)
   public void addUnknownBanknoteTest() {
-    AutomatedTellerMachine atm = new RubleAutomatedTellerMachine();
+    ATM atm = atmFactory.createATM();
     atm.addBanknote(Banknote.builder()
             .banknoteType(RUBLE)
             .banknoteNominal(50)
@@ -79,7 +80,7 @@ public class ATMTests {
   @Test
   @SneakyThrows
   public void withdrawCashFromRubbleATMTest() {
-    AutomatedTellerMachine atm = new RubleAutomatedTellerMachine(banknotesMap);
+    ATM atm = atmFactory.createATM(banknotesMap);
     List<Banknote> cash = atm.withdrawCash(2300);
     assertNotNull(cash);
     assertFalse(cash.isEmpty());
@@ -101,7 +102,7 @@ public class ATMTests {
   @Test(expected = EmptyATMException.class)
   @SneakyThrows
   public void withdrawCashErrorTest() {
-    AutomatedTellerMachine atm = new RubleAutomatedTellerMachine();
+    ATM atm = atmFactory.createATM();
     atm.addBanknote(Banknote.builder()
             .banknoteType(RUBLE)
             .banknoteNominal(2000)
