@@ -17,7 +17,7 @@ public class TestRunner {
 
   public static void run(Class<?> c) {
     Objects.requireNonNull(c, "Class should not be null");
-    Object o = createObject(c);
+    Object o = ReflectionHelper.createObject(c);
     runClassMethods(o, Before.class);
     runClassMethods(o, Test.class);
     runClassMethods(o, After.class);
@@ -28,22 +28,15 @@ public class TestRunner {
     if (packageName.isEmpty()) {
       throw new IllegalArgumentException("Package name should not be empty");
     }
-    List<Class<?>> classes = getClassesWithPackage(packageName);
+    List<Class<?>> classes = ReflectionHelper.getClassesWithPackage(packageName);
     classes.stream()
             .filter(cl -> !cl.isInterface() || !cl.isAnnotation())
-            .map(TestRunner::createObject)
+            .map(ReflectionHelper::createObject)
             .forEach(o -> {
               runClassMethods(o, Before.class);
               runClassMethods(o, Test.class);
               runClassMethods(o, After.class);
             });
-  }
-
-  @SneakyThrows
-  private static Object createObject(Class<?> c) {
-    Object o = c.newInstance();
-    Objects.requireNonNull(o);
-    return o;
   }
 
   private static void runClassMethods(Object o, Class<? extends Annotation> annotationClass) {
@@ -63,41 +56,5 @@ public class TestRunner {
     } else {
       method.invoke(o);
     }
-  }
-
-  @SneakyThrows
-  private static List<Class<?>> getClassesWithPackage(String packageName) {
-    ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-    Objects.requireNonNull(classLoader);
-
-    String path = packageName.replace('.', '/');
-    Enumeration resources = classLoader.getResources(path);
-    List<File> dirs = new ArrayList<>();
-    while (resources.hasMoreElements()) {
-      URL resource = (URL) resources.nextElement();
-      dirs.add(new File(resource.getFile()));
-    }
-    List<Class<?>> classes = new ArrayList<>();
-    for (File directory : dirs) {
-      classes.addAll(findClasses(directory, packageName));
-    }
-    return classes;
-  }
-
-  private static List<Class<?>> findClasses(File directory, String packageName) throws ClassNotFoundException {
-    List<Class<?>> classes = new ArrayList<>();
-    if (!directory.exists()) {
-      return classes;
-    }
-    File[] files = directory.listFiles();
-    for (File file : Objects.requireNonNull(files)) {
-      if (file.isDirectory()) {
-        assert !file.getName().contains(".");
-        classes.addAll(findClasses(file, packageName + "." + file.getName()));
-      } else if (file.getName().endsWith(".class")) {
-        classes.add(Class.forName(packageName + '.' + file.getName().substring(0, file.getName().length() - 6)));
-      }
-    }
-    return classes;
   }
 }

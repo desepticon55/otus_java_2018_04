@@ -17,6 +17,7 @@
         <module>homework6</module>
         <module>homework7</module>
         <module>homework8</module>
+        <module>homework9</module>
     </modules>
 
     <developers>
@@ -39,6 +40,8 @@
         <version.mockito-all>1.10.19</version.mockito-all>
         <version.powermock-mockito>1.6.4</version.powermock-mockito>
         <version.gson>2.5</version.gson>
+        <version.h2>1.4.197</version.h2>
+        <version.reflections>0.9.10</version.reflections>
     </properties>
 
     <dependencyManagement>
@@ -106,6 +109,16 @@
                 <groupId>com.google.code.gson</groupId>
                 <artifactId>gson</artifactId>
                 <version>${version.gson}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.h2database</groupId>
+                <artifactId>h2</artifactId>
+                <version>${version.h2}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.reflections</groupId>
+                <artifactId>reflections</artifactId>
+                <version>${version.reflections}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
