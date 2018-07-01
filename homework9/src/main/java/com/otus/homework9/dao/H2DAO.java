@@ -24,23 +24,8 @@ public class H2DAO implements DAO {
   @InjectByType(type = LocalH2DataSource.class)
   private DataSource dataSource;
 
-  public H2DAO(DataSource dataSource) {
-    this.dataSource = dataSource;
-  }
-
   @SuppressWarnings("unchecked")
-  public <T> void insertEntity(T entity) {
-    Objects.requireNonNull(entity, "Entity should be not null");
-    Entity entityAnnotation = entity.getClass().getAnnotation(Entity.class);
-    Objects.requireNonNull(entityAnnotation, "Entity name should be not null");
-    Set<Field> fields = ReflectionUtils.getAllFields(entity.getClass(), Objects::nonNull);
-    if (fields.isEmpty()) {
-      throw new EmptyEntityException();
-    }
-    String tableName = entityAnnotation.name().toLowerCase();
-    String parameters = fields.stream().map(el -> "?").collect(Collectors.joining(","));
-    String fieldNames = fields.stream().map(Field::getName).collect(Collectors.joining(","));
-    String sql = String.format("insert into %s (%s) values (%s)", tableName, fieldNames, parameters);
+  public <T> void insertEntity(T entity, Set<Field> fields, String sql) {
     try(Connection connection = dataSource.getConnection()) {
       PreparedStatement preparedStatement = connection.prepareStatement(sql);
       List<Object> values = getFieldValuesFromObject(fields, entity);
@@ -67,11 +52,7 @@ public class H2DAO implements DAO {
             .collect(Collectors.toList());
   }
 
-  public <T extends DataSet> T selectEntityById(Long id, Class<?> clazz) {
-    Objects.requireNonNull(id, "Id should be not null");
-    String entityName = getEntityName(clazz);
-    String fieldNames = getEntityFieldsStr(clazz);
-    String sql = String.format("select %s from %s where id = %d", fieldNames, entityName, id);
+  public <T extends DataSet> T selectEntityById(Long id, Class<?> clazz, String sql) {
     try(Connection connection = dataSource.getConnection()) {
       Statement statement = connection.createStatement();
       ResultSet rs = statement.executeQuery(sql);
@@ -83,10 +64,7 @@ public class H2DAO implements DAO {
   }
 
 
-  public <T extends DataSet> List<T> selectListEntities(Class<?> clazz) {
-    String entityName = getEntityName(clazz);
-    String fieldNames = getEntityFieldsStr(clazz);
-    String sql = String.format("select %s from %s", fieldNames, entityName);
+  public <T extends DataSet> List<T> selectListEntities(Class<?> clazz, String sql) {
     try(Connection connection = dataSource.getConnection()) {
       Statement statement = connection.createStatement();
       ResultSet rs = statement.executeQuery(sql);
@@ -95,23 +73,6 @@ public class H2DAO implements DAO {
       e.printStackTrace();
       return Collections.emptyList();
     }
-  }
-
-  @SuppressWarnings("unchecked")
-  private String getEntityFieldsStr(Class<?> clazz) {
-    Objects.requireNonNull(clazz, "Class entity should be not null");
-    Set<Field> fields = ReflectionUtils.getAllFields(clazz, Objects::nonNull);
-    return fields.stream()
-            .map(Field::getName)
-            .map(String::toLowerCase)
-            .collect(Collectors.joining(","));
-  }
-
-  private String getEntityName(Class<?> clazz) {
-    Objects.requireNonNull(clazz, "Class entity should be not null");
-    Entity entityAnnotation = clazz.getAnnotation(Entity.class);
-    Objects.requireNonNull(entityAnnotation, "Entity name should be not null");
-    return entityAnnotation.name();
   }
 
   @SneakyThrows

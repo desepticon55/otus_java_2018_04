@@ -4,7 +4,7 @@ import com.otus.homework9.entity.DataSet;
 
 import java.util.List;
 
-public interface Executor {
+public interface DBService {
   <T extends DataSet> void save(T entity);
 
   <T extends DataSet> T load(Long id, Class<T> clazz);

@@ -14,23 +14,23 @@ import java.util.List;
 public class ExecutorService implements Executor {
 
   @InjectByType
-  private DAO dao;
+  private DBService dbService;
 
   @Override
   @SneakyThrows
   public <T extends DataSet> void save(T entity) {
-    dao.insertEntity(entity);
+    dbService.save(entity);
   }
 
   @Override
   @SneakyThrows
-  public <T extends DataSet> T load(long id, Class<T> clazz) {
-    return dao.selectEntityById(id, clazz);
+  public <T extends DataSet> T load(Long id, Class<T> clazz) {
+    return dbService.load(id, clazz);
   }
 
   @Override
   @SneakyThrows
   public <T extends DataSet> List<T> load(Class<T> clazz) {
-    return dao.selectListEntities(clazz);
+    return dbService.load(clazz);
   }
 }
