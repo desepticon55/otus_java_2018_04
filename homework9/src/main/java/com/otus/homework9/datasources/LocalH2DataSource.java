@@ -1,5 +1,6 @@
-package com.otus.homework9.config;
+package com.otus.homework9.datasources;
 
+import com.otus.homework9.annotations.Component;
 import com.otus.homework9.annotations.Configuration;
 import com.otus.homework9.annotations.Value;
 import lombok.SneakyThrows;
@@ -13,6 +14,7 @@ import java.sql.SQLException;
 import java.sql.SQLFeatureNotSupportedException;
 import java.util.logging.Logger;
 
+@Component
 @Configuration
 public class LocalH2DataSource implements DataSource {
 

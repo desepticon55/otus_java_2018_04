@@ -1,4 +1,4 @@
-package com.otus.homework9;
+package com.otus.homework9.entity;
 
 public class EmptyEntityException extends RuntimeException {
   public EmptyEntityException() {

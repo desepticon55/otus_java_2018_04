@@ -1,23 +1,18 @@
 package com.otus.homework9;
 
-import com.otus.homework9.config.LocalH2DataSource;
-import com.otus.homework9.entity.DataSet;
 import com.otus.homework9.entity.EmployeeData;
+import com.otus.homework9.services.Executor;
+import com.otus.homework9.services.ExecutorService;
 
-import javax.sql.DataSource;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.Statement;
 import java.util.List;
 import java.util.Objects;
-
-import static com.otus.homework9.config.Configurator.configurator;
 
 public class Application {
 
   public static void main(String[] args) {
-    Executor executor = new MyExecutor();
+    ObjectFactory objectFactory = ObjectFactory.getInstance();
+    objectFactory.init();
+    Executor executor = objectFactory.createObject(ExecutorService.class);
     executor.save(new EmployeeData().setName("Alexey").setAge(23));
     executor.save(new EmployeeData().setName("Viktor").setAge(15));
     executor.save(new EmployeeData().setName("Alexander").setAge(50));

@@ -1,8 +1,12 @@
-package com.otus.homework9;
+package com.otus.homework9.dao;
 
+import com.otus.homework9.datasources.LocalH2DataSource;
+import com.otus.homework9.entity.EmptyEntityException;
+import com.otus.homework9.annotations.Component;
 import com.otus.homework9.annotations.Entity;
-import com.otus.homework9.config.LocalH2DataSource;
+import com.otus.homework9.annotations.InjectByType;
 import com.otus.homework9.entity.DataSet;
+import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
 import org.reflections.ReflectionUtils;
 
@@ -11,17 +15,21 @@ import javax.sql.DataSource;
 import java.lang.reflect.Field;
 import java.sql.*;
 import java.util.*;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static com.otus.homework9.config.Configurator.configurator;
+@Component
+@NoArgsConstructor
+public class H2DAO implements DAO {
 
-public class H2DAO {
+  @InjectByType(type = LocalH2DataSource.class)
+  private DataSource dataSource;
 
-  private DataSource dataSource = configurator.getConfiguredObject(LocalH2DataSource.class);
+  public H2DAO(DataSource dataSource) {
+    this.dataSource = dataSource;
+  }
 
   @SuppressWarnings("unchecked")
-  public <T> void insertEntity(T entity) throws Exception {
+  public <T> void insertEntity(T entity) {
     Objects.requireNonNull(entity, "Entity should be not null");
     Entity entityAnnotation = entity.getClass().getAnnotation(Entity.class);
     Objects.requireNonNull(entityAnnotation, "Entity name should be not null");
@@ -59,7 +67,7 @@ public class H2DAO {
             .collect(Collectors.toList());
   }
 
-  public <T extends DataSet> T selectEntityById(Long id, Class<?> clazz) throws SQLException {
+  public <T extends DataSet> T selectEntityById(Long id, Class<?> clazz) {
     Objects.requireNonNull(id, "Id should be not null");
     String entityName = getEntityName(clazz);
     String fieldNames = getEntityFieldsStr(clazz);
@@ -75,7 +83,7 @@ public class H2DAO {
   }
 
 
-  public <T extends DataSet> List<T> selectListEntities(Class<?> clazz) throws SQLException {
+  public <T extends DataSet> List<T> selectListEntities(Class<?> clazz) {
     String entityName = getEntityName(clazz);
     String fieldNames = getEntityFieldsStr(clazz);
     String sql = String.format("select %s from %s", fieldNames, entityName);

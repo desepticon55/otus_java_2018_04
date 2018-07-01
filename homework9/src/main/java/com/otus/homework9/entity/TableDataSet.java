@@ -1,6 +1,5 @@
 package com.otus.homework9.entity;
 
-import com.otus.homework9.RowMapper;
 import com.otus.homework9.annotations.Column;
 import com.otus.homework9.annotations.Entity;
 import lombok.Getter;
