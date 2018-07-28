@@ -15,16 +15,16 @@ public class Application {
     ObjectFactory factory = ObjectFactory.getInstance();
     factory.init(Application.class);
     PhoneService phoneService = factory.createObject(PhoneService.class);
-    List<Phone> phones = Arrays.asList(new Phone()
-            .setNumber("+79852458695"), new Phone().setNumber("+79854588888"));
 
-    PersonService personService = factory.createObject(PersonService.class);
     Person person = new Person()
             .setFirstName("Alexey")
             .setLastName("Bodyak")
             .setAge(23)
-            .setPhones(phones)
             .setSex("мужской");
+    List<Phone> phones = Arrays.asList(new Phone()
+            .setNumber("+79852458695").setPerson(person), new Phone().setNumber("+79854588888").setPerson(person));
+    person.setPhones(phones);
+    PersonService personService = factory.createObject(PersonService.class);
     System.out.println("Save Person method: " + personService.save(person));
     personService.findAll().forEach(System.out::println);
     System.out.println("Find Person by id: " + personService.findById(1L));
