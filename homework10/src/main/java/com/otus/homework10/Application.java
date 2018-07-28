@@ -17,9 +17,6 @@ public class Application {
     PhoneService phoneService = factory.createObject(PhoneService.class);
     List<Phone> phones = Arrays.asList(new Phone()
             .setNumber("+79852458695"), new Phone().setNumber("+79854588888"));
-    phones.forEach(phoneService::save);
-    phoneService.findAll().forEach(System.out::println);
-    System.out.println("Find Phone by id: " + phoneService.findById(1L));
 
     PersonService personService = factory.createObject(PersonService.class);
     Person person = new Person()
@@ -31,6 +28,7 @@ public class Application {
     System.out.println("Save Person method: " + personService.save(person));
     personService.findAll().forEach(System.out::println);
     System.out.println("Find Person by id: " + personService.findById(1L));
+    System.out.println("Find Phone by id: " + phoneService.findById(1L));
 
   }
 }

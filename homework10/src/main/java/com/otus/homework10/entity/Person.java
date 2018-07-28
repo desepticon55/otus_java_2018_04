@@ -30,7 +30,7 @@ public class Person extends DataSet {
   @OneToOne(cascade = CascadeType.ALL)
   private Address address;
 
-  @OneToMany(mappedBy="person")
+  @OneToMany(mappedBy="person", cascade = CascadeType.PERSIST)
   private List<Phone> phones;
 }
 

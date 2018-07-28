@@ -1,8 +1,6 @@
 package com.otus.homework10.service;
 
-import com.otus.homework10.dao.PersonDao;
 import com.otus.homework10.dao.PhoneDao;
-import com.otus.homework10.entity.Person;
 import com.otus.homework10.entity.Phone;
 import com.otus.homework9.annotations.Component;
 import com.otus.homework9.annotations.InjectByType;
