@@ -1,14 +1,11 @@
-package com.otus.homework10;
+package com.otus.homework10.entity;
 
-import com.otus.homework9.entity.DataSet;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Getter
 @Setter

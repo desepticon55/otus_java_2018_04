@@ -16,7 +16,7 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class ObjectFactory {
-  private final static ObjectFactory ourInstance = new ObjectFactory();
+  private final static ObjectFactory INSTANCE = new ObjectFactory();
   private Map<String, Object> configuredObjects = new ConcurrentHashMap<>();
   private Reflections scanner;
 
@@ -25,7 +25,7 @@ public class ObjectFactory {
   private static boolean createdSingletonsAndEntities = false;
 
   public static ObjectFactory getInstance() {
-    return ourInstance;
+    return INSTANCE;
   }
 
   private ObjectFactory() {
@@ -72,11 +72,15 @@ public class ObjectFactory {
   }
 
   @SuppressWarnings("unchecked")
-  private <T> void invokeInitMethods(Class<?> type, T t) throws IllegalAccessException, InvocationTargetException {
+  private <T> void invokeInitMethods(Class<?> type, T t) {
     Set<Method> methods = ReflectionUtils.getAllMethods(type);
     for (Method method : methods) {
       if (method.isAnnotationPresent(InitMethod.class)) {
-        method.invoke(t);
+        try {
+          method.invoke(t);
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
       }
     }
   }

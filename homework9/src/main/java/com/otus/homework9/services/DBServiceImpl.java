@@ -57,6 +57,10 @@ public class DBServiceImpl implements DBService {
     return dao.selectListEntities(clazz, sql);
   }
 
+  @Override
+  public void printHello() {
+
+  }
 
   @SuppressWarnings("unchecked")
   private String getEntityFieldsStr(Class<?> clazz) {

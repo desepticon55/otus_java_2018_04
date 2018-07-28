@@ -1,14 +1,12 @@
-package com.otus.homework10;
+package com.otus.homework10.entity;
 
 import com.otus.homework9.annotations.Column;
-import com.otus.homework9.entity.DataSet;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Getter
 @Setter
@@ -19,4 +17,8 @@ import javax.persistence.Table;
 public class Phone extends DataSet {
   @Column
   private String number;
+
+  @ManyToOne
+  @JoinColumn(name = "person_id", nullable = false)
+  private Person person;
 }

@@ -1,20 +1,22 @@
-package com.otus.homework10;
+package com.otus.homework10.entity;
 
-import com.otus.homework9.entity.DataSet;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @Setter
-@ToString
-@Accessors(chain = true)
 @Entity
+@ToString
 @Table(name = "person")
+@Accessors(chain = true)
+@AttributeOverrides({
+        @AttributeOverride(name = "id", column = @Column(name = "person_id"))
+})
 public class Person extends DataSet {
   @Column
   private String firstName;
@@ -24,10 +26,11 @@ public class Person extends DataSet {
   private Integer age;
   @Column
   private String sex;
-  @Column
-  @OneToOne
+
+  @OneToOne(cascade = CascadeType.ALL)
   private Address address;
-  @Column
-  @ManyToOne
-  private Phone phone;
+
+  @OneToMany(mappedBy="person")
+  private List<Phone> phones;
 }
+
