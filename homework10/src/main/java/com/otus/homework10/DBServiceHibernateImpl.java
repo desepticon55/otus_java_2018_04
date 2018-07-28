@@ -30,17 +30,15 @@ public class DBServiceHibernateImpl {
   }
 
 
-  public <T extends DataSet> void save(T entity) {
-    try (Session session = sessionFactory.openSession()) {
-      session.save(entity);
-    }
+  public <T> void save(T entity) {
+    runInSession(session -> session.save(entity));
   }
 
-  public <T extends DataSet> T findById(Long id, Class<T> clazz) {
+  public <T> T findById(Long id, Class<T> clazz) {
     return runInSession(session -> session.get(clazz, id));
   }
 
-  public <T extends DataSet> List<T> findAll(Class<T> clazz) {
+  public <T> List<T> findAll(Class<T> clazz) {
     return runInSession(session -> {
       CriteriaBuilder builder = session.getCriteriaBuilder();
       CriteriaQuery<T> criteria = builder.createQuery(clazz);

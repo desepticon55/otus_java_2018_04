@@ -14,7 +14,10 @@ import javax.persistence.*;
 @Accessors(chain = true)
 @Entity
 @Table(name = "phone")
-public class Phone extends DataSet {
+public class Phone {
+  @Id
+  @Column
+  private Long id;
   @Column
   private String number;
 

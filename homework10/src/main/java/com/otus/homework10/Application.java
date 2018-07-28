@@ -17,12 +17,15 @@ public class Application {
     PhoneService phoneService = factory.createObject(PhoneService.class);
 
     Person person = new Person()
+            .setId(1L)
             .setFirstName("Alexey")
             .setLastName("Bodyak")
             .setAge(23)
             .setSex("мужской");
-    List<Phone> phones = Arrays.asList(new Phone()
-            .setNumber("+79852458695").setPerson(person), new Phone().setNumber("+79854588888").setPerson(person));
+    List<Phone> phones = Arrays.asList(
+            new Phone().setId(1L).setNumber("+79852458695").setPerson(person),
+            new Phone().setId(2L).setNumber("+79854588888").setPerson(person));
+    phones.forEach(phoneService::save);
     person.setPhones(phones);
     PersonService personService = factory.createObject(PersonService.class);
     System.out.println("Save Person method: " + personService.save(person));

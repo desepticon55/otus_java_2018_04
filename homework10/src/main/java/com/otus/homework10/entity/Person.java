@@ -14,10 +14,11 @@ import java.util.List;
 @ToString
 @Table(name = "person")
 @Accessors(chain = true)
-@AttributeOverrides({
-        @AttributeOverride(name = "id", column = @Column(name = "person_id"))
-})
-public class Person extends DataSet {
+public class Person {
+
+  @Id
+  @Column(name = "person_id")
+  private Long id;
   @Column
   private String firstName;
   @Column
