@@ -31,7 +31,7 @@ public class Application {
     System.out.println("Save Person method: " + personService.save(person));
     personService.findAll().forEach(System.out::println);
     System.out.println("Find Person by id: " + personService.findById(1L));
-    System.out.println("Find Phone by id: " + phoneService.findById(1L));
+    phoneService.findAll().forEach(System.out::println);
 
   }
 }

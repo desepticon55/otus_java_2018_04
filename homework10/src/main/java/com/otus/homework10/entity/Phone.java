@@ -1,6 +1,5 @@
 package com.otus.homework10.entity;
 
-import com.otus.homework9.annotations.Column;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -22,6 +21,6 @@ public class Phone {
   private String number;
 
   @ManyToOne
-  @JoinColumn(name = "person_id", nullable = false)
+  @JoinColumn(name = "person_id")
   private Person person;
 }
