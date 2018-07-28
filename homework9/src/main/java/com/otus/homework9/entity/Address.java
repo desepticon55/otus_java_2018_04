@@ -2,8 +2,6 @@ package com.otus.homework9.entity;
 
 import com.otus.homework9.annotations.Column;
 import com.otus.homework9.annotations.Entity;
-import com.otus.homework9.annotations.OneToOne;
-import com.otus.homework9.entity.DataSet;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -11,14 +9,12 @@ import lombok.experimental.Accessors;
 
 @Getter
 @Setter
-@ToString(callSuper = true)
+@ToString
+@Entity(name = "address")
 @Accessors(chain = true)
-@Entity(name = "employee")
-public class EmployeeData extends DataSet {
+public class Address extends DataSet {
   @Column
-  private String name;
+  private String street;
   @Column
-  private Integer age;
-  @OneToOne
-  private Address address;
+  private String city;
 }

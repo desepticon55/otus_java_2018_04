@@ -1,10 +1,9 @@
 package com.otus.homework9.dao;
 
+import com.otus.homework9.annotations.*;
 import com.otus.homework9.datasources.LocalH2DataSource;
+import com.otus.homework9.entity.Address;
 import com.otus.homework9.entity.EmptyEntityException;
-import com.otus.homework9.annotations.Component;
-import com.otus.homework9.annotations.Entity;
-import com.otus.homework9.annotations.InjectByType;
 import com.otus.homework9.entity.DataSet;
 import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
@@ -38,12 +37,23 @@ public class H2DAO implements DAO {
     }
   }
 
+  @SuppressWarnings("unchecked")
   private <T> List<Object> getFieldValuesFromObject(Set<Field> fields, T entity) {
     return fields.stream()
             .peek(el -> el.setAccessible(true))
             .map(el -> {
               try {
-                return el.get(entity);
+                if (Objects.nonNull(el.get(entity)) && el.isAnnotationPresent(OneToOne.class)) {
+                  Field idField = ReflectionUtils.getAllFields(el.getType(), Objects::nonNull).stream()
+                          .filter(field -> field.isAnnotationPresent(Id.class))
+                          .findFirst()
+                          .orElseThrow(() -> new RuntimeException("Не найден идентификатор у связанной сущности"));
+                  idField.setAccessible(true);
+                  System.out.println(idField.get(el.get(entity)));
+                  return idField.get(el.get(entity));
+                } else {
+                  return el.get(entity);
+                }
               } catch (IllegalAccessException e) {
                 e.printStackTrace();
                 return false;
@@ -94,8 +104,10 @@ public class H2DAO implements DAO {
   @SneakyThrows
   @SuppressWarnings("unchecked")
   private <T> T resultSetToObject(ResultSet rs, Class<?> c) {
+    if (!rs.next()) {
+      return null;
+    }
     Set<Field> fields = ReflectionUtils.getAllFields(c, Objects::nonNull);
-    rs.next();
     T o = (T) c.newInstance();
     fields.forEach(f -> {
       f.setAccessible(true);
@@ -104,6 +116,7 @@ public class H2DAO implements DAO {
     return o;
   }
 
+  //todo временный костыль
   private void rowMapper(Object o, Field f, ResultSet rs) {
     try {
       if (f.getType().equals(Integer.class)) {
@@ -117,6 +130,11 @@ public class H2DAO implements DAO {
       }
       if (f.getType().equals(String.class)) {
         f.set(o, rs.getString(f.getName().toLowerCase()));
+      }
+      if (f.isAnnotationPresent(OneToOne.class)) {
+        long id = rs.getLong(String.format("%s_id", f.getName()));
+        DataSet entity = selectEntityById(id, f.getType(), String.format("select * from %s where id = %d", f.getName().toLowerCase(), id));
+        f.set(o, entity);
       }
     } catch (Exception e) {
       e.printStackTrace();

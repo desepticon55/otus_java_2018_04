@@ -1,9 +1,6 @@
 package com.otus.homework9.services;
 
-import com.otus.homework9.annotations.Column;
-import com.otus.homework9.annotations.Entity;
-import com.otus.homework9.annotations.Id;
-import com.otus.homework9.annotations.InjectByType;
+import com.otus.homework9.annotations.*;
 import com.otus.homework9.datasources.LocalH2DataSource;
 import lombok.SneakyThrows;
 import org.reflections.ReflectionUtils;
@@ -11,10 +8,9 @@ import org.reflections.ReflectionUtils;
 import javax.sql.DataSource;
 import java.lang.reflect.Field;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class EntityObjectCreator {
@@ -30,7 +26,7 @@ public class EntityObjectCreator {
     }
     Set<Field> declaredFields = ReflectionUtils.getAllFields(c, Objects::nonNull);
     List<Field> fields = declaredFields.stream()
-            .filter(el -> el.isAnnotationPresent(Column.class))
+            .filter(el -> el.isAnnotationPresent(Column.class) || el.isAnnotationPresent(OneToOne.class))
             .collect(Collectors.toList());
     Connection connection = dataSource.getConnection();
     Statement st = connection.createStatement();
@@ -40,12 +36,32 @@ public class EntityObjectCreator {
     fields.forEach(el -> {
       if (el.isAnnotationPresent(Id.class)) {
         sb.append(String.format("%s int(20) identity", el.getName()));
+      } else if (el.isAnnotationPresent(OneToOne.class)) {
+        sb.append(String.format("%s_id int(20),", el.getName()));
       } else {
         sb.append(String.format("%s %s,", el.getName(), getDBTypeByClass(el.getType())));
       }
     });
     sb.append(")");
     st.execute(sb.toString());
+    addForeignKey(entity.name(), declaredFields, st);
+  }
+
+  private void addForeignKey(String tableName, Set<Field> declaredFields, Statement st) {
+    List<Field> fields = declaredFields.stream()
+            .filter(el -> el.isAnnotationPresent(OneToOne.class))
+            .collect(Collectors.toList());
+    fields.forEach(field -> {
+      String fieldName = field.getName();
+      String foreignKeyIdentifier = UUID.randomUUID().toString().replaceAll("-", "");
+      String sql = String.format("alter table %s add CONSTRAINT FK%s FOREIGN KEY (%s_id) references %s(id)", tableName,
+              foreignKeyIdentifier, fieldName, fieldName);
+      try {
+        st.execute(sql);
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
+    });
   }
 
   private String getDBTypeByClass(Class<?> c) {

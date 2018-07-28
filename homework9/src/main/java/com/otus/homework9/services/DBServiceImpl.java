@@ -2,6 +2,7 @@ package com.otus.homework9.services;
 
 import com.otus.homework9.annotations.Entity;
 import com.otus.homework9.annotations.InjectByType;
+import com.otus.homework9.annotations.OneToOne;
 import com.otus.homework9.dao.DAO;
 import com.otus.homework9.entity.DataSet;
 import com.otus.homework9.entity.EmptyEntityException;
@@ -32,7 +33,14 @@ public class DBServiceImpl implements DBService {
     }
     String tableName = entityAnnotation.name().toLowerCase();
     String parameters = fields.stream().map(el -> "?").collect(Collectors.joining(","));
-    String fieldNames = fields.stream().map(Field::getName).collect(Collectors.joining(","));
+    String fieldNames = fields.stream()
+            .map(el -> {
+              if (el.isAnnotationPresent(OneToOne.class)) {
+                return String.format("%s_id", el.getName());
+              }
+              return el.getName();
+            })
+            .collect(Collectors.joining(","));
     String sql = String.format("insert into %s (%s) values (%s)", tableName, fieldNames, parameters);
 
     dao.insertEntity(entity, fields, sql);
@@ -67,7 +75,12 @@ public class DBServiceImpl implements DBService {
     Objects.requireNonNull(clazz, "Class entity should be not null");
     Set<Field> fields = ReflectionUtils.getAllFields(clazz, Objects::nonNull);
     return fields.stream()
-            .map(Field::getName)
+            .map(el -> {
+              if (el.isAnnotationPresent(OneToOne.class)) {
+                return String.format("%s_id", el.getName());
+              }
+              return el.getName();
+            })
             .map(String::toLowerCase)
             .collect(Collectors.joining(","));
   }
