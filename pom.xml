@@ -18,6 +18,7 @@
         <module>homework7</module>
         <module>homework8</module>
         <module>homework9</module>
+        <module>homework10</module>
     </modules>
 
     <developers>
@@ -42,6 +43,9 @@
         <version.gson>2.5</version.gson>
         <version.h2>1.4.197</version.h2>
         <version.reflections>0.9.10</version.reflections>
+        <version.hibernate>5.3.1.Final</version.hibernate>
+        <version.datafactory>0.8</version.datafactory>
+        <version.guavatests>17.0</version.guavatests>
     </properties>
 
     <dependencyManagement>
@@ -119,6 +123,56 @@
                 <groupId>org.reflections</groupId>
                 <artifactId>reflections</artifactId>
                 <version>${version.reflections}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-core</artifactId>
+                <version>${version.hibernate}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-entitymanager</artifactId>
+                <version>${version.hibernate}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-osgi</artifactId>
+                <version>${version.hibernate}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-envers</artifactId>
+                <version>${version.hibernate}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-c3p0</artifactId>
+                <version>${version.hibernate}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-proxool</artifactId>
+                <version>${version.hibernate}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-infinispan</artifactId>
+                <version>${version.hibernate}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-ehcache</artifactId>
+                <version>${version.hibernate}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.fluttercode.datafactory</groupId>
+                <artifactId>datafactory</artifactId>
+                <version>${version.datafactory}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava-testlib</artifactId>
+                <version>${version.guavatests}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

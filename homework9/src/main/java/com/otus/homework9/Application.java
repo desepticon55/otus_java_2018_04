@@ -11,7 +11,7 @@ public class Application {
 
   public static void main(String[] args) {
     ObjectFactory objectFactory = ObjectFactory.getInstance();
-    objectFactory.init();
+    objectFactory.init(Application.class);
     Executor executor = objectFactory.createObject(ExecutorService.class);
     executor.save(new EmployeeData().setName("Alexey").setAge(23));
     executor.save(new EmployeeData().setName("Viktor").setAge(15));

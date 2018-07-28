@@ -23,6 +23,7 @@ public class EntityObjectCreator {
   private DataSource dataSource;
 
   @SneakyThrows
+  @SuppressWarnings("unchecked")
   public <T> void createEntity(Class<?> c) {
     if (!c.isAnnotationPresent(Entity.class)) {
       return;

@@ -18,7 +18,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ObjectFactory {
   private final static ObjectFactory ourInstance = new ObjectFactory();
   private Map<String, Object> configuredObjects = new ConcurrentHashMap<>();
-  private Reflections scanner = new Reflections(Application.class.getPackage().getName());
+  private Reflections scanner;
 
   private List<ObjectConfigurator> configurators = new ArrayList<>();
 
@@ -29,6 +29,22 @@ public class ObjectFactory {
   }
 
   private ObjectFactory() {
+  }
+
+  public void init(Class<?> classRunner) {
+    scanner = new Reflections(getClass().getPackage().getName(), classRunner.getPackage().getName());
+    findConfigurations();
+    if (!createdSingletonsAndEntities) {
+      Set<Class<?>> componentClasses = scanner.getTypesAnnotatedWith(Component.class);
+      componentClasses.forEach(c -> configuredObjects.put(c.getCanonicalName(), createObject(c)));
+      EntityObjectCreator entityObjectCreator = createObject(EntityObjectCreator.class);
+      List<Class<?>> classesWithPackage = ReflectionHelper.getClassesWithPackage(classRunner.getPackage().getName());
+      classesWithPackage.forEach(entityObjectCreator::createEntity);
+      createdSingletonsAndEntities = true;
+    }
+  }
+
+  private void findConfigurations() {
     Set<Class<? extends ObjectConfigurator>> classes = scanner.getSubTypesOf(ObjectConfigurator.class);
     classes.forEach(c -> {
       if (!Modifier.isAbstract(c.getModifiers())) {
@@ -39,17 +55,6 @@ public class ObjectFactory {
         }
       }
     });
-  }
-
-  public void init() {
-    if (!createdSingletonsAndEntities) {
-      Set<Class<?>> componentClasses = scanner.getTypesAnnotatedWith(Component.class);
-      componentClasses.forEach(c -> configuredObjects.put(c.getCanonicalName(), createObject(c)));
-      EntityObjectCreator entityObjectCreator = createObject(EntityObjectCreator.class);
-      List<Class<?>> classesWithPackage = ReflectionHelper.getClassesWithPackage(Application.class.getPackage().getName());
-      classesWithPackage.forEach(entityObjectCreator::createEntity);
-      createdSingletonsAndEntities = true;
-    }
   }
 
   @SneakyThrows
