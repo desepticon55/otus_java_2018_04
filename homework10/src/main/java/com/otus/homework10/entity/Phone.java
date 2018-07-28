@@ -9,7 +9,7 @@ import javax.persistence.*;
 
 @Getter
 @Setter
-@ToString
+@ToString(exclude = "person")
 @Accessors(chain = true)
 @Entity
 @Table(name = "phone")

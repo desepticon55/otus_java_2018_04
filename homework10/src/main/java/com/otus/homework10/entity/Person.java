@@ -31,7 +31,7 @@ public class Person {
   @OneToOne(cascade = CascadeType.ALL)
   private Address address;
 
-  @OneToMany(mappedBy="person", cascade = CascadeType.PERSIST)
+  @OneToMany(mappedBy="person", cascade = CascadeType.ALL)
   private List<Phone> phones;
 }
 
