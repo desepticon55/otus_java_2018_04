@@ -28,7 +28,7 @@ public class SorterService {
       }
     });
 
-    int[] mergeSorters = mergeSorters(sortersMap.values().toArray());
+    int[] mergeSorters = mergeSorters(sortersMap.values().toArray(new Sorter[0]));
 
     System.arraycopy(mergeSorters, 0, array, 0, array.length);
   }
@@ -55,7 +55,7 @@ public class SorterService {
     return (i + 1) == NUMBER_OF_THREADS;
   }
 
-  private int[] mergeSorters(Object[] sorters) {
+  private int[] mergeSorters(Runnable[] sorters) {
     int[] mergeAr = ((Sorter) sorters[0]).getArray();
     for (int i = 1; i < NUMBER_OF_THREADS; i++) {
       mergeAr = ArrayUtils.merge(mergeAr,((Sorter) sorters[i]).getArray());

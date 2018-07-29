@@ -6,7 +6,7 @@ import java.util.Arrays;
 
 @Getter
 public class Sorter implements Runnable {
-  private int[] array;
+  private final int[] array;
 
   Sorter(int[] array) {
     this.array = array;
