@@ -13,6 +13,9 @@ import java.sql.Statement;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * Класс, который создает все сущность при старте приложения
+ */
 public class EntityObjectCreator {
 
   @InjectByType(type = LocalH2DataSource.class)
@@ -47,6 +50,12 @@ public class EntityObjectCreator {
     addForeignKey(entity.name(), declaredFields, st);
   }
 
+  /**
+   * Метод, добавляющий внешний ключ, для связи OneToOne
+   * @param tableName имя таблицы
+   * @param declaredFields поля таблицы
+   * @param st Statement
+   */
   private void addForeignKey(String tableName, Set<Field> declaredFields, Statement st) {
     List<Field> fields = declaredFields.stream()
             .filter(el -> el.isAnnotationPresent(OneToOne.class))

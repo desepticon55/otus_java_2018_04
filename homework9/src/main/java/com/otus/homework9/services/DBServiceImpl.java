@@ -15,11 +15,18 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * Класс для формирования необходимых запросов для работы с БД
+ */
 public class DBServiceImpl implements DBService {
 
   @InjectByType
   private DAO dao;
 
+  /**
+   * Метод, сохраняющий объект в БД
+   * @param entity объект, который необходимо сохранить
+   */
   @Override
   @SneakyThrows
   @SuppressWarnings("unchecked")
@@ -46,6 +53,12 @@ public class DBServiceImpl implements DBService {
     dao.insertEntity(entity, fields, sql);
   }
 
+  /**
+   * Метод, получающий объект по идентификатору
+   * @param id идентификатор
+   * @param clazz класс, объект которого надо получить
+   * @return объект
+   */
   @Override
   @SneakyThrows
   public <T extends DataSet> T load(Long id, Class<T> clazz) {
@@ -56,6 +69,11 @@ public class DBServiceImpl implements DBService {
     return dao.selectEntityById(id, clazz, sql);
   }
 
+  /**
+   * Метод, получающий список объектов определенного класса
+   * @param clazz класс, объект которого надо получить
+   * @return объект
+   */
   @Override
   @SneakyThrows
   public <T extends DataSet> List<T> load(Class<T> clazz) {
@@ -65,11 +83,11 @@ public class DBServiceImpl implements DBService {
     return dao.selectListEntities(clazz, sql);
   }
 
-  @Override
-  public void printHello() {
-
-  }
-
+  /**
+   * Вспомогательный метод формирующий строку для SQL запроса
+   * @param clazz класс, объект которого надо получить
+   * @return строка для SQL запроса
+   */
   @SuppressWarnings("unchecked")
   private String getEntityFieldsStr(Class<?> clazz) {
     Objects.requireNonNull(clazz, "Class entity should be not null");
@@ -85,6 +103,11 @@ public class DBServiceImpl implements DBService {
             .collect(Collectors.joining(","));
   }
 
+  /**
+   * Вспомогательный метод, возвращающий имя сущности
+   * @param clazz класс, описывающий сущность
+   * @return имя сущности
+   */
   private String getEntityName(Class<?> clazz) {
     Objects.requireNonNull(clazz, "Class entity should be not null");
     Entity entityAnnotation = clazz.getAnnotation(Entity.class);

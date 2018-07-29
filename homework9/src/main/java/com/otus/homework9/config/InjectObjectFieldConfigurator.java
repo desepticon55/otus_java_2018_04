@@ -8,6 +8,9 @@ import java.lang.reflect.Field;
 import java.util.Objects;
 import java.util.Set;
 
+/**
+ * Класс инжектит созданные бины в поля, помеченные аннотацией @InjectByType
+ */
 public class InjectObjectFieldConfigurator implements ObjectConfigurator {
 
   @Override

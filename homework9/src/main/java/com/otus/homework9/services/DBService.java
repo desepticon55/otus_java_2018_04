@@ -10,6 +10,4 @@ public interface DBService {
   <T extends DataSet> T load(Long id, Class<T> clazz);
 
   <T extends DataSet> List<T> load(Class<T> clazz);
-
-  void printHello();
 }

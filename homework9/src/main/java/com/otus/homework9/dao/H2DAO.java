@@ -16,6 +16,9 @@ import java.sql.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * Обычный DAO
+ */
 @Component
 @NoArgsConstructor
 public class H2DAO implements DAO {
@@ -23,6 +26,12 @@ public class H2DAO implements DAO {
   @InjectByType(type = LocalH2DataSource.class)
   private DataSource dataSource;
 
+  /**
+   * Метод вставляет объект в таблицу
+   * @param entity объект, который необходимо вставить в таблицу
+   * @param fields поля данного объекта
+   * @param sql sql запрос
+   */
   @SuppressWarnings("unchecked")
   public <T> void insertEntity(T entity, Set<Field> fields, String sql) {
     try(Connection connection = dataSource.getConnection()) {
@@ -37,6 +46,12 @@ public class H2DAO implements DAO {
     }
   }
 
+  /**
+   * Вспомогательный метод для получения списка значений полей объекта
+   * @param fields поля объекта
+   * @param entity объект
+   * @return список значений объекта
+   */
   @SuppressWarnings("unchecked")
   private <T> List<Object> getFieldValuesFromObject(Set<Field> fields, T entity) {
     return fields.stream()
@@ -62,6 +77,13 @@ public class H2DAO implements DAO {
             .collect(Collectors.toList());
   }
 
+  /**
+   * Метод получает объект по идентификатору
+   * @param id идентификатор объекта
+   * @param clazz класс, описывающий нужный объект
+   * @param sql запрос, по которому получаем объект
+   * @return объект
+   */
   public <T extends DataSet> T selectEntityById(Long id, Class<?> clazz, String sql) {
     try(Connection connection = dataSource.getConnection()) {
       Statement statement = connection.createStatement();
@@ -73,7 +95,12 @@ public class H2DAO implements DAO {
     }
   }
 
-
+  /**
+   * Метод получает список объектов
+   * @param clazz класс, описывающий нужный объект
+   * @param sql запрос, по которому получаем объект
+   * @return список объектов
+   */
   public <T extends DataSet> List<T> selectListEntities(Class<?> clazz, String sql) {
     try(Connection connection = dataSource.getConnection()) {
       Statement statement = connection.createStatement();
@@ -85,6 +112,12 @@ public class H2DAO implements DAO {
     }
   }
 
+  /**
+   * Вспомогательный метод для конвертации ResultSet в список объектов нужного класса
+   * @param rs ResultSet
+   * @param c класс, описывающий нужный объект
+   * @return список объектов
+   */
   @SneakyThrows
   @SuppressWarnings("unchecked")
   private <T> List<T> resultSetToList(ResultSet rs, Class<?> c) {
@@ -101,6 +134,12 @@ public class H2DAO implements DAO {
     return result;
   }
 
+  /**
+   * Вспомогательный метод для конвертации ResultSet в объект нужного класса
+   * @param rs ResultSet
+   * @param c класс, описывающий нужный объект
+   * @return объект
+   */
   @SneakyThrows
   @SuppressWarnings("unchecked")
   private <T> T resultSetToObject(ResultSet rs, Class<?> c) {
@@ -117,6 +156,13 @@ public class H2DAO implements DAO {
   }
 
   //todo временный костыль
+
+  /**
+   * Вспомогательный метод для маппинга значений из БД в поля объекта
+   * @param o объект, поля которого надо заполнить
+   * @param f поле
+   * @param rs ResultSet
+   */
   private void rowMapper(Object o, Field f, ResultSet rs) {
     try {
       if (f.getType().equals(Integer.class)) {

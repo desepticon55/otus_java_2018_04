@@ -15,6 +15,9 @@ import java.lang.reflect.Modifier;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * Фабрика, позволяющая создавать, настраивать бины, сущности БД и т.д.
+ */
 public class ObjectFactory {
   private final static ObjectFactory INSTANCE = new ObjectFactory();
   private Map<String, Object> configuredObjects = new ConcurrentHashMap<>();
@@ -31,6 +34,12 @@ public class ObjectFactory {
   private ObjectFactory() {
   }
 
+  /**
+   * Метод, инициализирующий фабрику. В параметр передается main класс.
+   * Создаются, настраиваются и помещаются в мапу бины, аннотированные @Component которые в дальнейшем будут использоваться для инжекта
+   * Создаются таблицы в БД, которые описывают классы аннотированные @Entity
+   * @param classRunner main класс
+   */
   public void init(Class<?> classRunner) {
     scanner = new Reflections(getClass().getPackage().getName(), classRunner.getPackage().getName());
     findConfigurations();
@@ -44,6 +53,9 @@ public class ObjectFactory {
     }
   }
 
+  /**
+   * Вспомогательный метод для поиска классов, описывающих конфигурацию бинов
+   */
   private void findConfigurations() {
     Set<Class<? extends ObjectConfigurator>> classes = scanner.getSubTypesOf(ObjectConfigurator.class);
     classes.forEach(c -> {
@@ -57,6 +69,11 @@ public class ObjectFactory {
     });
   }
 
+  /**
+   * Метод, создающий объект по классу
+   * @param type класс, объект которого создать
+   * @return созданный и настроенный объект
+   */
   @SneakyThrows
   @SuppressWarnings("unchecked")
   public <T> T createObject(Class<?> type) {
@@ -71,6 +88,11 @@ public class ObjectFactory {
     return o;
   }
 
+  /**
+   * Метод, позволяющий выполнить init-метод бина (двухфакторный конструктор)
+   * @param type класс, в котором описан необходимый init-метод
+   * @param t объект, у которого требуется выполнить init-метод
+   */
   @SuppressWarnings("unchecked")
   private <T> void invokeInitMethods(Class<?> type, T t) {
     Set<Method> methods = ReflectionUtils.getAllMethods(type);
@@ -85,12 +107,22 @@ public class ObjectFactory {
     }
   }
 
+  /**
+   * Вспомогательный метод для конфигурирования бинов
+   * @param t объект, который необходимо сконфигурировать
+   */
   private <T> void configure(T t) {
     for (ObjectConfigurator configurator : configurators) {
       configurator.configure(t);
     }
   }
 
+  /**
+   * Вспомогательный метод, который ищет классы, имплементирующие интерфейс(если инжект происходит по интерфейсу)
+   * Если находит более одного класса, реализущего интерфейс -> бросаем исключение
+   * @param type исследуемый класс
+   * @return результирующий класс
+   */
   @SuppressWarnings("unchecked")
   private <T> Class<T> resolveImpl(Class<T> type) {
     if (type.isInterface()) {
