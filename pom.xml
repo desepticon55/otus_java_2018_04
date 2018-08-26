@@ -21,6 +21,7 @@
         <module>homework10</module>
         <module>homework14</module>
         <module>homework11</module>
+        <module>homework12</module>
     </modules>
 
     <developers>
@@ -48,6 +49,8 @@
         <version.hibernate>5.3.1.Final</version.hibernate>
         <version.datafactory>0.8</version.datafactory>
         <version.guavatests>17.0</version.guavatests>
+        <version.freemarker>2.3.28</version.freemarker>
+        <version.servlet-api>4.0.0</version.servlet-api>
     </properties>
 
     <dependencyManagement>
@@ -175,6 +178,16 @@
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava-testlib</artifactId>
                 <version>${version.guavatests}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.freemarker</groupId>
+                <artifactId>freemarker</artifactId>
+                <version>${version.freemarker}</version>
+            </dependency>
+            <dependency>
+                <groupId>javax.servlet</groupId>
+                <artifactId>javax.servlet-api</artifactId>
+                <version>${version.servlet-api}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
