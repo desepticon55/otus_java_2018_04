@@ -1,5 +1,6 @@
 package com.otus.homework12.servlet;
 
+import com.otus.homework12.annotations.Component;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -10,14 +11,15 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Map;
 
+@Component
 public class TemplateProcessor {
-  private static final String HTML_DIR = "template";
+  private static final String TEMPLATE_DIR = "/templates";
 
   private final Configuration configuration;
 
-  TemplateProcessor() throws IOException {
+  public TemplateProcessor() throws IOException {
     configuration = new Configuration(Configuration.VERSION_2_3_28);
-    configuration.setDirectoryForTemplateLoading(new File(HTML_DIR));
+    configuration.setDirectoryForTemplateLoading(new File(getClass().getResource(TEMPLATE_DIR).getPath()));
     configuration.setDefaultEncoding("UTF-8");
   }
 

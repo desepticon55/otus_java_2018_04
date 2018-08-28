@@ -1,45 +1,88 @@
 package com.otus.homework12.servlet;
 
-import com.otus.homework12.entity.Person;
+import com.otus.homework12.ObjectFactory;
+import com.otus.homework12.annotations.Component;
+import com.otus.homework12.annotations.InjectByType;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class LoginServlet extends HttpServlet {
 
-  private List<Person> employeesList = new ArrayList<>();
+  private static final String LOGIN_PARAMETER_NAME = "login";
+  private static final String LOGIN_VARIABLE_NAME = "login";
+  private static final String HELP_VARIABLE_NAME = "help";
+  private static final String LOGIN_PAGE_TEMPLATE = "login.ftl";
+
+  @InjectByType
+  private TemplateProcessor templateProcessor;
+
+  private String getPage(String login, String help) throws IOException {
+    Map<String, Object> pageVariables = new HashMap<>();
+    pageVariables.put(LOGIN_VARIABLE_NAME, login == null ? "" : login);
+    pageVariables.put(HELP_VARIABLE_NAME, help == null ? "" : help);
+    return templateProcessor.getPage(LOGIN_PAGE_TEMPLATE, pageVariables);
+  }
+
 
   @Override
-  public void init() throws ServletException {
-    super.init();
-    Person rahu_bangalore = new Person().setName("Rahu Bangalore").setAge(23);
-    rahu_bangalore.setId(1L);
-    employeesList.add(rahu_bangalore);
+  public void doGet(HttpServletRequest request,
+                    HttpServletResponse response) throws ServletException, IOException {
+    doPost(request, response);
   }
 
   @Override
-  protected void doGet(HttpServletRequest request, HttpServletResponse response)
-          throws ServletException, IOException {
-    request.setAttribute("employees", employeesList);
-    request.getRequestDispatcher("/index.ftl").forward(request, response);
-  }
+  public void doPost(HttpServletRequest request,
+                     HttpServletResponse response) throws ServletException, IOException {
+    String requestLogin = request.getParameter(LOGIN_PARAMETER_NAME);
+    if (requestLogin == null) requestLogin = (String) request.getSession().getAttribute("login");
 
-  @Override
-  protected void doPost(HttpServletRequest request, HttpServletResponse response)
-          throws ServletException, IOException {
-    String id = request.getParameter("id");
-    String name = request.getParameter("name");
-    String age = request.getParameter("age");
-    if (null != name && !name.isEmpty()) {
-      Person person = new Person().setName(name).setAge(Integer.valueOf(age));
-      person.setId(Long.valueOf(id));
-      employeesList.add(person);
+    if (accessAccepted(requestLogin)) {
+      saveToSession(request, requestLogin); //request.getSession().getAttribute("login");
+      setOK(response);
+      String l = (String) request.getSession().getAttribute("login");
+      String page = getPage(l, "Вы авторизованы!"); //save to the page
+      response.getWriter().println(page);
+    } else {
+      saveToSession(request, null); //request.getSession().getAttribute("login");
+      setForbidden(response);
+      String l = (String) request.getSession().getAttribute("login");
+      String page = getPage(l, "Вход только для тех, у кого имя состоит из восемнадцати букв!"); //save to the page
+      response.getWriter().println(page);
     }
-    doGet(request, response);
+
+  }
+
+  private boolean accessAccepted(String requestLogin) {
+    if (requestLogin == null) return false;
+    return requestLogin.length() == 18;
+  }
+
+  private void saveToCookie(HttpServletResponse response, String requestLogin) {
+    response.addCookie(new Cookie("L12.1-login", requestLogin));
+  }
+
+  private void saveToServlet(HttpServletRequest request, String requestLogin) {
+    request.getServletContext().setAttribute("login", requestLogin);
+  }
+
+  private void saveToSession(HttpServletRequest request, String requestLogin) {
+    request.getSession().setAttribute("login", requestLogin);
+  }
+
+  private void setOK(HttpServletResponse response) {
+    response.setContentType("text/html;charset=utf-8");
+    response.setStatus(HttpServletResponse.SC_OK);
+  }
+
+  private void setForbidden(HttpServletResponse response) {
+    response.setContentType("text/html;charset=utf-8");
+    response.setStatus(HttpServletResponse.SC_FORBIDDEN);
   }
 }

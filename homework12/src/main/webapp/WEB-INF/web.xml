@@ -6,7 +6,6 @@
 		http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
          id="WebApp_ID" version="2.5">
 
-    <display-name>FreeMarker_Hello_World</display-name>
     <welcome-file-list>
         <welcome-file>index.html</welcome-file>
     </welcome-file-list>
@@ -56,13 +55,13 @@
 
 
     <servlet>
-        <servlet-name>hello_servlet</servlet-name>
+        <servlet-name>loginServlet</servlet-name>
         <servlet-class>com.otus.homework12.servlet.LoginServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>hello_servlet</servlet-name>
-        <url-pattern>/hello</url-pattern>
+        <servlet-name>loginServlet</servlet-name>
+        <url-pattern>/login</url-pattern>
     </servlet-mapping>
 
     <!--

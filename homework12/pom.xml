@@ -68,7 +68,7 @@
         <dependency>
             <groupId>com.otus.homework</groupId>
             <artifactId>homework5</artifactId>
-            <scope>system</scope>
+            <!--<scope>system</scope>-->
             <!--<systemPath>${basedir}/../homework5/target/homework5-jar-with-dependencies.jar</systemPath>-->
             <version>1.0-SNAPSHOT</version>
         </dependency>
