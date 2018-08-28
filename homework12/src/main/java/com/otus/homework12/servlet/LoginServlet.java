@@ -1,9 +1,5 @@
 package com.otus.homework12.servlet;
 
-import com.otus.homework12.ObjectFactory;
-import com.otus.homework12.annotations.Component;
-import com.otus.homework12.annotations.InjectByType;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
@@ -20,8 +16,15 @@ public class LoginServlet extends HttpServlet {
   private static final String HELP_VARIABLE_NAME = "help";
   private static final String LOGIN_PAGE_TEMPLATE = "login.ftl";
 
-  @InjectByType
   private TemplateProcessor templateProcessor;
+
+  LoginServlet(TemplateProcessor templateProcessor) {
+    this.templateProcessor = templateProcessor;
+  }
+
+  public LoginServlet() throws IOException {
+    this(new TemplateProcessor());
+  }
 
   private String getPage(String login, String help) throws IOException {
     Map<String, Object> pageVariables = new HashMap<>();

@@ -1,17 +1,17 @@
-package com.otus.homework12.services;
+package com.otus.homework12.service;
 
-import com.otus.homework12.annotations.Component;
-import com.otus.homework12.annotations.InjectByType;
 import com.otus.homework12.dao.PersonDao;
 import com.otus.homework12.entity.Person;
 
 import java.util.List;
 
-@Component
 public class PersonService {
 
-  @InjectByType
-  private PersonDao personDao;
+  private final PersonDao personDao;
+
+  public PersonService() throws Exception {
+    this.personDao = new PersonDao();
+  }
 
   public List<Person> findAll() {
     return personDao.findAll();

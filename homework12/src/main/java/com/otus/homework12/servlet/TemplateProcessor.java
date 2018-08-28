@@ -1,6 +1,5 @@
 package com.otus.homework12.servlet;
 
-import com.otus.homework12.annotations.Component;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -11,7 +10,6 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Map;
 
-@Component
 public class TemplateProcessor {
   private static final String TEMPLATE_DIR = "/templates";
 

@@ -30,6 +30,7 @@ public class EntityObjectCreator {
     Set<Field> declaredFields = ReflectionUtils.getAllFields(c, Objects::nonNull);
     List<Field> fields = declaredFields.stream()
             .filter(el -> el.isAnnotationPresent(Column.class) || el.isAnnotationPresent(OneToOne.class))
+            .sorted(Comparator.comparing(f -> f.isAnnotationPresent(Id.class)))
             .collect(Collectors.toList());
     Connection connection = dataSource.getConnection();
     Statement st = connection.createStatement();

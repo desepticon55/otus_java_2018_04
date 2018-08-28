@@ -1,16 +1,19 @@
 package com.otus.homework12.entity;
 
-import com.otus.homework12.annotations.Column;
-import com.otus.homework12.annotations.Id;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
+
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
 
 @Getter
 @Setter
-@ToString
-public abstract class DataSet {
+@MappedSuperclass
+public class DataSet {
+
   @Id
-  @Column
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 }

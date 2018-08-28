@@ -1,20 +1,22 @@
 package com.otus.homework12.entity;
 
-import com.otus.homework12.annotations.Column;
-import com.otus.homework12.annotations.Entity;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
 @Getter
 @Setter
 @ToString
-@Entity(name = "address")
 @Accessors(chain = true)
+@Entity
+@Table(name = "address")
 public class Address extends DataSet {
+
   @Column
   private String street;
-  @Column
-  private String city;
 }

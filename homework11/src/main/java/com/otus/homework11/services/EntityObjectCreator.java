@@ -10,10 +10,7 @@ import java.lang.reflect.Field;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -33,6 +30,7 @@ public class EntityObjectCreator {
     Set<Field> declaredFields = ReflectionUtils.getAllFields(c, Objects::nonNull);
     List<Field> fields = declaredFields.stream()
             .filter(el -> el.isAnnotationPresent(Column.class) || el.isAnnotationPresent(OneToOne.class))
+            .sorted(Comparator.comparing(f -> f.isAnnotationPresent(Id.class)))
             .collect(Collectors.toList());
     Connection connection = dataSource.getConnection();
     Statement st = connection.createStatement();

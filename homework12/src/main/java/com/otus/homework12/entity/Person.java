@@ -1,23 +1,37 @@
 package com.otus.homework12.entity;
 
-import com.otus.homework12.annotations.Column;
-import com.otus.homework12.annotations.Entity;
-import com.otus.homework12.annotations.OneToOne;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+import javax.persistence.*;
+import java.util.List;
+
 @Getter
 @Setter
-@ToString(callSuper = true)
+@Entity
+@ToString
+@Table(name = "person")
 @Accessors(chain = true)
-@Entity(name = "employee")
-public class Person extends DataSet {
+public class Person {
+
+  @Id
+  @Column(name = "person_id")
+  private Long id;
   @Column
-  private String name;
+  private String firstName;
+  @Column
+  private String lastName;
   @Column
   private Integer age;
-  @OneToOne
+  @Column
+  private String sex;
+
+  @OneToOne(cascade = CascadeType.ALL)
   private Address address;
+
+  @OneToMany(mappedBy="person", cascade = CascadeType.ALL)
+  private List<Phone> phones;
 }
+

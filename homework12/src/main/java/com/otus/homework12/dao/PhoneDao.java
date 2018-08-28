@@ -1,25 +1,24 @@
 package com.otus.homework12.dao;
 
 import com.otus.homework12.DBServiceHibernateImpl;
-import com.otus.homework12.entity.Person;
+import com.otus.homework12.entity.Phone;
 
 import java.util.List;
 
-public class PersonDao {
-
+public class PhoneDao {
   private DBServiceHibernateImpl dbService;
 
-  public PersonDao() throws Exception {
+  public PhoneDao() throws Exception {
     this.dbService = new DBServiceHibernateImpl();
   }
 
-  public List<Person> findAll() {
-    return dbService.findAll(Person.class);
+  public List<Phone> findAll() {
+    return dbService.findAll(Phone.class);
   }
 
-  public Boolean save(Person person) {
+  public Boolean save(Phone phone) {
     try {
-      dbService.save(person);
+      dbService.save(phone);
       return Boolean.TRUE;
     } catch (Exception e) {
       e.printStackTrace();
@@ -27,7 +26,7 @@ public class PersonDao {
     }
   }
 
-  public Person findById(Long id) {
-    return dbService.findById(id, Person.class);
+  public Phone findById(Long id) {
+    return dbService.findById(id, Phone.class);
   }
 }
