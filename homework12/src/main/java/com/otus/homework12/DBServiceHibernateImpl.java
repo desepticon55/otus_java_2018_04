@@ -7,8 +7,10 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 
+import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.util.List;
 import java.util.function.Function;
 
@@ -29,6 +31,17 @@ public class DBServiceHibernateImpl {
 
   public <T> T findById(Long id, Class<T> clazz) {
     return runInSession(session -> session.get(clazz, id));
+  }
+
+  public <T> List<T> findByField(Class<T> clazz, String fieldName, String value) {
+    return runInSession(session -> {
+      CriteriaBuilder builder = session.getCriteriaBuilder();
+      CriteriaQuery<T> criteria = builder.createQuery(clazz);
+      Root<T> from = criteria.from(clazz);
+      criteria.select(from);
+      criteria.where(builder.equal(from.get(fieldName), value));
+      return session.createQuery(criteria).list();
+    });
   }
 
   public <T> List<T> findAll(Class<T> clazz) {

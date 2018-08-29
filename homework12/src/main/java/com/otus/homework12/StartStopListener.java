@@ -19,16 +19,22 @@ public class StartStopListener implements ServletContextListener {
               .setId(1L)
               .setFirstName("Alexey")
               .setLastName("Bodyak")
+              .setLogin("bodyak")
               .setAge(23)
               .setSex("мужской");
       List<Phone> phones = Arrays.asList(
               new Phone().setId(1L).setNumber("+79852458695").setPerson(person),
               new Phone().setId(2L).setNumber("+79854588888").setPerson(person));
       person.setPhones(phones);
-      PersonService personService = new PersonService();
+      PersonService personService = PersonService.getInstance();
       System.out.println("Save Person method: " + personService.save(person));
     } catch (Exception e) {
       e.printStackTrace();
     }
+  }
+
+  @Override
+  public void contextDestroyed(ServletContextEvent servletContextEvent) {
+    // not implemented
   }
 }

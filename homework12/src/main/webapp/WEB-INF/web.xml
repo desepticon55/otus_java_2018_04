@@ -68,6 +68,16 @@
         <url-pattern>/login</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>adminServlet</servlet-name>
+        <servlet-class>com.otus.homework12.servlet.AdminServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>adminServlet</servlet-name>
+        <url-pattern>/admin</url-pattern>
+    </servlet-mapping>
+
     <!--
         Prevent the visiting of MVC Views from outside the servlet container.
         RequestDispatcher.forward/include should and will still work. Removing

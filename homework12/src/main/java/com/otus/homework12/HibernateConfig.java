@@ -34,7 +34,7 @@ public class HibernateConfig {
   public Configuration getConfig() throws Exception {
     configureFields();
     Configuration configuration = new Configuration();
-    //todo можно с помощью reflection найти все классы, аннотированные @Entity и добавить их в Configuration
+
     configuration.addAnnotatedClass(Person.class);
     configuration.addAnnotatedClass(Address.class);
     configuration.addAnnotatedClass(Phone.class);

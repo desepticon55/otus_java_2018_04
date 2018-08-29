@@ -1,5 +1,8 @@
 package com.otus.homework12.servlet;
 
+import com.otus.homework12.entity.Person;
+import com.otus.homework12.service.PersonService;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
@@ -8,22 +11,21 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class LoginServlet extends HttpServlet {
 
-  private static final String LOGIN_PARAMETER_NAME = "login";
+  public static final String LOGIN_PARAMETER_NAME = "login";
   private static final String LOGIN_VARIABLE_NAME = "login";
   private static final String HELP_VARIABLE_NAME = "help";
   private static final String LOGIN_PAGE_TEMPLATE = "login.ftl";
 
   private TemplateProcessor templateProcessor;
+  private PersonService personService;
 
-  LoginServlet(TemplateProcessor templateProcessor) {
-    this.templateProcessor = templateProcessor;
-  }
-
-  public LoginServlet() throws IOException {
-    this(new TemplateProcessor());
+  public LoginServlet() throws Exception {
+    this.templateProcessor = new TemplateProcessor();
+    this.personService = PersonService.getInstance();
   }
 
   private String getPage(String login, String help) throws IOException {
@@ -32,7 +34,6 @@ public class LoginServlet extends HttpServlet {
     pageVariables.put(HELP_VARIABLE_NAME, help == null ? "" : help);
     return templateProcessor.getPage(LOGIN_PAGE_TEMPLATE, pageVariables);
   }
-
 
   @Override
   public void doGet(HttpServletRequest request,
@@ -56,7 +57,7 @@ public class LoginServlet extends HttpServlet {
       saveToSession(request, null); //request.getSession().getAttribute("login");
       setForbidden(response);
       String l = (String) request.getSession().getAttribute("login");
-      String page = getPage(l, "Вход только для тех, у кого имя состоит из восемнадцати букв!"); //save to the page
+      String page = getPage(l, "Неверное имя пользователя!"); //save to the page
       response.getWriter().println(page);
     }
 
@@ -64,7 +65,7 @@ public class LoginServlet extends HttpServlet {
 
   private boolean accessAccepted(String requestLogin) {
     if (requestLogin == null) return false;
-    return requestLogin.length() == 18;
+    return Objects.nonNull(personService.findByLogin(requestLogin));
   }
 
   private void saveToCookie(HttpServletResponse response, String requestLogin) {

@@ -20,6 +20,8 @@ public class Person {
   @Column(name = "person_id")
   private Long id;
   @Column
+  private String login;
+  @Column
   private String firstName;
   @Column
   private String lastName;
